@@ -1,0 +1,235 @@
+ID	Par	coding	meaning
+1	174	G001	G00.1 Pneumococcal meningitis
+2	174	G009	G00.9 Bacterial meningitis, unspecified
+3	175	G020	G02.0 Meningitis in viral diseases classified elsewhere
+4	176	G039	G03.9 Meningitis, unspecified
+5	177	G048	G04.8 Other encephalitis, myelitis and encephalomyelitis
+6	177	G049	G04.9 Encephalitis, myelitis and encephalomyelitis, unspecified
+7	178	G051	G05.1 Encephalitis, myelitis and encephalomyelitis in viral diseases classified elsewhere
+8	179	G060	G06.0 Intracranial abscess and granuloma
+9	179	G061	G06.1 Intraspinal abscess and granuloma
+10	179	G062	G06.2 Extradural and subdural abscess, unspecified
+11	180	G114	G11.4 Hereditary spastic paraplegia
+12	180	G119	G11.9 Hereditary ataxia, unspecified
+13	181	G122	G12.2 Motor neuron disease
+14	182	G245	G24.5 Blepharospasm
+15	182	G248	G24.8 Other dystonia
+16	182	G249	G24.9 Dystonia, unspecified
+17	183	G250	G25.0 Essential tremor
+18	183	G252	G25.2 Other specified forms of tremor
+19	183	G253	G25.3 Myoclonus
+20	183	G258	G25.8 Other specified extrapyramidal and movement disorders
+21	183	G259	G25.9 Extrapyramidal and movement disorder, unspecified
+22	184	G300	G30.0 Alzheimer's disease with early onset
+23	184	G309	G30.9 Alzheimer's disease, unspecified
+24	185	G310	G31.0 Circumscribed brain atrophy
+25	185	G312	G31.2 Degeneration of nervous system due to alcohol
+26	185	G318	G31.8 Other specified degenerative diseases of nervous system
+27	185	G319	G31.9 Degenerative disease of nervous system, unspecified
+28	186	G328	G32.8 Other specified degenerative disorders of nervous system in diseases classified elsewhere
+29	187	G373	G37.3 Acute transverse myelitis in demyelinating disease of central nervous system
+30	187	G378	G37.8 Other specified demyelinating diseases of central nervous system
+31	187	G379	G37.9 Demyelinating disease of central nervous system, unspecified
+32	188	G400	G40.0 Localisation-related (focal) (partial) idiopathic epilepsy and epileptic syndromes with seizures of localised onset
+33	188	G401	G40.1 Localisation-related (focal) (partial) symptomatic epilepsy and epileptic syndromes with simple partial seizures
+34	188	G402	G40.2 Localisation-related (focal) (partial) symptomatic epilepsy and epileptic syndromes with complex partial seizures
+35	188	G403	G40.3 Generalised idiopathic epilepsy and epileptic syndromes
+36	188	G405	G40.5 Special epileptic syndromes
+37	188	G406	G40.6 Grand mal seizures, unspecified (with or without petit mal)
+38	188	G407	G40.7 Petit mal, unspecified, without grand mal seizures
+39	188	G408	G40.8 Other epilepsy
+40	188	G409	G40.9 Epilepsy, unspecified
+41	189	G410	G41.0 Grand mal status epilepticus
+42	189	G419	G41.9 Status epilepticus, unspecified
+43	190	G430	G43.0 Migraine without aura [common migraine]
+44	190	G431	G43.1 Migraine with aura [classical migraine]
+45	190	G438	G43.8 Other migraine
+46	190	G439	G43.9 Migraine, unspecified
+47	191	G440	G44.0 Cluster headache syndrome
+48	191	G442	G44.2 Tension-type headache
+49	191	G444	G44.4 Drug-induced headache, not elsewhere classified
+50	191	G448	G44.8 Other specified headache syndromes
+51	192	G450	G45.0 Vertebro-basilar artery syndrome
+52	192	G451	G45.1 Carotid artery syndrome (hemispheric)
+53	192	G453	G45.3 Amaurosis fugax
+54	192	G454	G45.4 Transient global amnesia
+55	192	G458	G45.8 Other transient cerebral ischaemic attacks and related syndromes
+56	192	G459	G45.9 Transient cerebral ischaemic attack, unspecified
+57	193	G464	G46.4 Cerebellar stroke syndrome
+58	193	G467	G46.7 Other lacunar syndromes
+59	194	G470	G47.0 Disorders of initiating and maintaining sleep [insomnias]
+60	194	G471	G47.1 Disorders of excessive somnolence [hypersomnias]
+61	194	G473	G47.3 Sleep apnoea
+62	194	G474	G47.4 Narcolepsy and cataplexy
+63	194	G478	G47.8 Other sleep disorders
+64	194	G479	G47.9 Sleep disorder, unspecified
+65	195	G500	G50.0 Trigeminal neuralgia
+66	195	G501	G50.1 Atypical facial pain
+67	195	G508	G50.8 Other disorders of trigeminal nerve
+68	196	G510	G51.0 Bell's palsy
+69	196	G513	G51.3 Clonic hemifacial spasm
+70	196	G518	G51.8 Other disorders of facial nerve
+71	196	G519	G51.9 Disorder of facial nerve, unspecified
+72	197	G530	G53.0 Postzoster neuralgia
+73	198	G540	G54.0 Brachial plexus disorders
+74	198	G544	G54.4 Lumbosacral root disorders, not elsewhere classified
+75	198	G546	G54.6 Phantom limb syndrome with pain
+76	198	G548	G54.8 Other nerve root and plexus disorders
+77	198	G549	G54.9 Nerve root and plexus disorder, unspecified
+78	199	G550	G55.0 Nerve root and plexus compressions in neoplastic disease
+79	199	G551	G55.1 Nerve root and plexus compressions in intervertebral disk disorders
+80	199	G552	G55.2 Nerve root and plexus compressions in spondylosis
+81	199	G553	G55.3 Nerve root and plexus compressions in other dorsopathies
+82	199	G558	G55.8 Nerve root and plexus compressions in other diseases classified elsewhere
+83	200	G560	G56.0 Carpal tunnel syndrome
+84	200	G561	G56.1 Other lesions of median nerve
+85	200	G562	G56.2 Lesion of ulnar nerve
+86	200	G563	G56.3 Lesion of radial nerve
+87	200	G564	G56.4 Causalgia
+88	200	G568	G56.8 Other mononeuropathies of upper limb
+89	200	G569	G56.9 Mononeuropathy of upper limb, unspecified
+90	201	G570	G57.0 Lesion of sciatic nerve
+91	201	G571	G57.1 Meralgia paraesthetica
+92	201	G573	G57.3 Lesion of lateral popliteal nerve
+93	201	G575	G57.5 Tarsal tunnel syndrome
+94	201	G576	G57.6 Lesion of plantar nerve
+95	201	G578	G57.8 Other mononeuropathies of lower limb
+96	201	G579	G57.9 Mononeuropathy of lower limb, unspecified
+97	202	G587	G58.7 Mononeuritis multiplex
+98	202	G588	G58.8 Other specified mononeuropathies
+99	202	G589	G58.9 Mononeuropathy, unspecified
+100	203	G590	G59.0 Diabetic mononeuropathy
+101	204	G600	G60.0 Hereditary motor and sensory neuropathy
+102	204	G608	G60.8 Other hereditary and idiopathic neuropathies
+103	204	G609	G60.9 Hereditary and idiopathic neuropathy, unspecified
+104	205	G610	G61.0 Guillain-Barre syndrome
+105	205	G618	G61.8 Other inflammatory polyneuropathies
+106	205	G619	G61.9 Inflammatory polyneuropathy, unspecified
+107	206	G620	G62.0 Drug-induced polyneuropathy
+108	206	G621	G62.1 Alcoholic polyneuropathy
+109	206	G628	G62.8 Other specified polyneuropathies
+110	206	G629	G62.9 Polyneuropathy, unspecified
+111	207	G632	G63.2 Diabetic polyneuropathy
+112	208	G700	G70.0 Myasthenia gravis
+113	208	G709	G70.9 Myoneural disorder, unspecified
+114	209	G710	G71.0 Muscular dystrophy
+115	209	G711	G71.1 Myotonic disorders
+116	209	G713	G71.3 Mitochondrial myopathy, not elsewhere classified
+117	210	G720	G72.0 Drug-induced myopathy
+118	210	G721	G72.1 Alcoholic myopathy
+119	210	G724	G72.4 Inflammatory myopathy, not elsewhere classified
+120	210	G728	G72.8 Other specified myopathies
+121	210	G729	G72.9 Myopathy, unspecified
+122	211	G800	G80.0 Spastic cerebral palsy
+123	211	G801	G80.1 Spastic diplegia
+124	211	G808	G80.8 Other infantile cerebral palsy
+125	211	G809	G80.9 Infantile cerebral palsy, unspecified
+126	212	G811	G81.1 Spastic hemiplegia
+127	212	G819	G81.9 Hemiplegia, unspecified
+128	213	G821	G82.1 Spastic paraplegia
+129	213	G822	G82.2 Paraplegia, unspecified
+130	213	G824	G82.4 Spastic tetraplegia
+131	213	G825	G82.5 Tetraplegia, unspecified
+132	214	G831	G83.1 Monoplegia of lower limb
+133	214	G832	G83.2 Monoplegia of upper limb
+134	214	G834	G83.4 Cauda equina syndrome
+135	214	G838	G83.8 Other specified paralytic syndromes
+136	214	G839	G83.9 Paralytic syndrome, unspecified
+137	215	G900	G90.0 Idiopathic peripheral autonomic neuropathy
+138	215	G902	G90.2 Horner's syndrome
+139	215	G903	G90.3 Multisystem degeneration
+140	215	G909	G90.9 Disorder of autonomic nervous system, unspecified
+141	216	G910	G91.0 Communicating hydrocephalus
+142	216	G911	G91.1 Obstructive hydrocephalus
+143	216	G912	G91.2 Normal-pressure hydrocephalus
+144	216	G919	G91.9 Hydrocephalus, unspecified
+145	217	G930	G93.0 Cerebral cysts
+146	217	G931	G93.1 Anoxic brain damage, not elsewhere classified
+147	217	G932	G93.2 Benign intracranial hypertension
+148	217	G933	G93.3 Postviral fatigue syndrome
+149	217	G934	G93.4 Encephalopathy, unspecified
+150	217	G936	G93.6 Cerebral oedema
+151	217	G938	G93.8 Other specified disorders of brain
+152	217	G939	G93.9 Disorder of brain, unspecified
+153	218	G941	G94.1 Hydrocephalus in neoplastic disease
+154	218	G942	G94.2 Hydrocephalus in other diseases classified elsewhere
+155	219	G950	G95.0 Syringomyelia and syringobulbia
+156	219	G951	G95.1 Vascular myelopathies
+157	219	G952	G95.2 Cord compression, unspecified
+158	219	G958	G95.8 Other specified diseases of spinal cord
+159	219	G959	G95.9 Disease of spinal cord, unspecified
+160	220	G960	G96.0 Cerebrospinal fluid leak
+161	220	G961	G96.1 Disorders of meninges, not elsewhere classified
+162	220	G968	G96.8 Other specified disorders of central nervous system
+163	221	G970	G97.0 Cerebrospinal fluid leak from spinal puncture
+164	221	G971	G97.1 Other reaction to spinal and lumbar puncture
+165	221	G978	G97.8 Other postprocedural disorders of nervous system
+166	222	G990	G99.0 Autonomic neuropathy in endocrine and metabolic diseases
+167	222	G992	G99.2 Myelopathy in diseases classified elsewhere
+168	223	G01	G01 Meningitis in bacterial diseases classified elsewhere
+169	223	G08	G08 Intracranial and intraspinal phlebitis and thrombophlebitis
+170	223	G09	G09 Sequelae of inflammatory diseases of central nervous system
+171	225	G20	G20 Parkinson's disease
+172	227	G35	G35 Multiple sclerosis
+173	233	G98	G98 Other disorders of nervous system, not elsewhere classified
+174	223	G00	G00 Bacterial meningitis, not elsewhere classified
+175	223	G02	G02 Meningitis in other infectious and parasitic diseases classified elsewhere
+176	223	G03	G03 Meningitis due to other and unspecified causes
+177	223	G04	G04 Encephalitis, myelitis and encephalomyelitis
+178	223	G05	G05 Encephalitis, myelitis and encephalomyelitis in diseases classified elsewhere
+179	223	G06	G06 Intracranial and intraspinal abscess and granuloma
+180	224	G11	G11 Hereditary ataxia
+181	224	G12	G12 Spinal muscular atrophy and related syndromes
+182	225	G24	G24 Dystonia
+183	225	G25	G25 Other extrapyramidal and movement disorders
+184	226	G30	G30 Alzheimer's disease
+185	226	G31	G31 Other degenerative diseases of nervous system, not elsewhere classified
+186	226	G32	G32 Other degenerative disorders of nervous system in diseases classified elsewhere
+187	227	G37	G37 Other demyelinating diseases of central nervous system
+188	228	G40	G40 Epilepsy
+189	228	G41	G41 Status epilepticus
+190	228	G43	G43 Migraine
+191	228	G44	G44 Other headache syndromes
+192	228	G45	G45 Transient cerebral ischaemic attacks and related syndromes
+193	228	G46	G46 Vascular syndromes of brain in cerebrovascular diseases
+194	228	G47	G47 Sleep disorders
+195	229	G50	G50 Disorders of trigeminal nerve
+196	229	G51	G51 Facial nerve disorders
+197	229	G53	G53 Cranial nerve disorders in diseases classified elsewhere
+198	229	G54	G54 Nerve root and plexus disorders
+199	229	G55	G55 Nerve root and plexus compressions in diseases classified elsewhere
+200	229	G56	G56 Mononeuropathies of upper limb
+201	229	G57	G57 Mononeuropathies of lower limb
+202	229	G58	G58 Other mononeuropathies
+203	229	G59	G59 Mononeuropathy in diseases classified elsewhere
+204	230	G60	G60 Hereditary and idiopathic neuropathy
+205	230	G61	G61 Inflammatory polyneuropathy
+206	230	G62	G62 Other polyneuropathies
+207	230	G63	G63 Polyneuropathy in diseases classified elsewhere
+208	231	G70	G70 Myasthenia gravis and other myoneural disorders
+209	231	G71	G71 Primary disorders of muscles
+210	231	G72	G72 Other myopathies
+211	232	G80	G80 Infantile cerebral palsy
+212	232	G81	G81 Hemiplegia
+213	232	G82	G82 Paraplegia and tetraplegia
+214	232	G83	G83 Other paralytic syndromes
+215	233	G90	G90 Disorders of autonomic nervous system
+216	233	G91	G91 Hydrocephalus
+217	233	G93	G93 Other disorders of brain
+218	233	G94	G94 Other disorders of brain in diseases classified elsewhere
+219	233	G95	G95 Other diseases of spinal cord
+220	233	G96	G96 Other disorders of central nervous system
+221	233	G97	G97 Postprocedural disorders of nervous system, not elsewhere classified
+222	233	G99	G99 Other disorders of nervous system in diseases classified elsewhere
+223	234	Block G00-G09	G00-G09 Inflammatory diseases of the central nervous system
+224	234	Block G10-G14	G10-G14 Systemic atrophies primarily affecting the central nervous system
+225	234	Block G20-G26	G20-G26 Extrapyramidal and movement disorders
+226	234	Block G30-G32	G30-G32 Other degenerative diseases of the nervous system
+227	234	Block G35-G37	G35-G37 Demyelinating diseases of the central nervous system
+228	234	Block G40-G47	G40-G47 Episodic and paroxysmal disorders
+229	234	Block G50-G59	G50-G59 Nerve, nerve root and plexus disorders
+230	234	Block G60-G64	G60-G64 Polyneuropathies and other disorders of the peripheral nervous system
+231	234	Block G70-G73	G70-G73 Diseases of myoneural junction and muscle
+232	234	Block G80-G83	G80-G83 Cerebral palsy and other paralytic syndromes
+233	234	Block G90-G99	G90-G99 Other disorders of the nervous system
+234	0	Chapter VI	Chapter VI Diseases of the nervous system

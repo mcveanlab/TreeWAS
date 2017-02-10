@@ -1,0 +1,10 @@
+Package: TreeWAS
+Title: implements a treeHMM for UKBB analysis
+Version: 0.0.0.9000
+Authors@R: "Adrian Cortes <adrcort@gmail.com> [aut, cre]"
+Description: implements a treeHMM for UKBB analysis
+Depends:
+    R (>= 3.0.0)
+License: free as in piwo gratis
+LazyData: true
+RoxygenNote: 5.0.1
