@@ -10,6 +10,13 @@ This repository contains R code to perform TreeWAS analysis. For a full descript
   R CMD INSTALL TreeWAS
 #+END_SRC
 
+or alternatively, do this from within an R session
+
+#+BEGIN_SRC R
+  library(devtools)
+  install_github("ac257/TreeWAS/TreeWAS")
+#+END_SRC
+
 + Run example dataset
 
 #+BEGIN_SRC sh
