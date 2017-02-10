@@ -1,0 +1,9 @@
+# History files
+.Rhistory
+
+# Session Data files
+.RData
+
+# emacs temp files
+*~
+
