@@ -4,6 +4,12 @@
 
 This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122][here]] or available within this repo.
 
++ Code is available as an R package. To install the package do:
+
+#+BEGIN_SRC sh
+  R CMD INSTALL TreeWAS
+#+END_SRC
+
 + Run example dataset
 
 #+BEGIN_SRC sh
