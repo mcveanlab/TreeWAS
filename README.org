@@ -2,6 +2,7 @@
 #+AUTHOR:    Adrian Cortes
 #+EMAIL:     adrcort@gmail.com
 
+This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122]here].
 
 + Run example dataset
 
