@@ -4,7 +4,7 @@
 
 This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122][here]] or available within this repo.
 
-+ Code is available as an R package. To install the package do:
++ The code is available as an R package. To install the package clone the repository and install:
 
 #+BEGIN_SRC sh
   R CMD INSTALL TreeWAS
@@ -16,8 +16,8 @@ This repository contains R code to perform TreeWAS analysis. For a full descript
 
   ./grs_tree_analysis.R \
     --sample_file=example_data/example_samplefile.txt \
-    --tree_file=example_datatree_example_ICD10_Chap_VI.txt \
-    --pheno_file=example_dataexample_pheno_file.txt \
+    --tree_file=example_data/tree_example_ICD10_Chap_VI.txt \
+    --pheno_file=example_data/example_pheno_file.txt \
     --outprefix=test.res \
     --num.cores=1
 
