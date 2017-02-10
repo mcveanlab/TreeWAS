@@ -1,6 +1,17 @@
-#+TITLE:     TreeWAS public repository
+#+TITLE:     TreeWAS
 #+AUTHOR:    Adrian Cortes
 #+EMAIL:     adrcort@gmail.com
 
 
-Test
++ Run example dataset
+
+#+BEGIN_SRC sh
+
+  ./grs_tree_analysis.R \
+    --sample_file=example_data/example_samplefile.txt \
+    --tree_file=example_datatree_example_ICD10_Chap_VI.txt \
+    --pheno_file=example_dataexample_pheno_file.txt \
+    --outprefix=test.res \
+    --num.cores=1
+
+#+END_SRC
