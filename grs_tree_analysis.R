@@ -140,7 +140,7 @@ if(nrow(samples) != nrow(phens)) {
 }
 
 if(!all(samples$V1 == phens$ID)) {
-    stop("Samples most have the same order in both files\n")
+    stop("Samples must have the same order in both files\n")
 }
 
 ######################
@@ -157,7 +157,7 @@ prior <- calculate_1d_prior(
     b1.range=c(-1.2,1.2),
     spac.b1=0.05);        
 
-## Transition Probabilities
+## Transition probabilities
 p.stay <- exp(-theta);
 p.switch <- 1-p.stay;
 p00 <- p.stay+p.switch*(1-p1);

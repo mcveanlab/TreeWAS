@@ -29,3 +29,10 @@ or alternatively, do this from within an R session
     --num.cores=1
 
 #+END_SRC
+
+
+** Citation
+
+If you use TreeWAS in your work, please cite us:
+
+Cortes A., et al. (2017) Bayesian analysis of genetic association across tree-structured routine healthcare data in the UK Biobank. bioRxiv 105122. doi: https://doi.org/10.1101/105122
