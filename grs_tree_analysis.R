@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+options(stringsAsFactors=FALSE)
+
 #######################
 ## Collect arguments ##
 #######################
