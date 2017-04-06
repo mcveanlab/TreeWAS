@@ -1,0 +1,19 @@
+language: r
+cache: packages
+
+r:
+  - oldrel
+  - release
+  - devel
+
+## The following is for later ... testing coverage and syntax
+#r_github_packages:
+  #- jimhester/lintr
+  #- jimhester/covr
+
+#after_success:
+  #- Rscript tools/lint-and-covr.R
+  #- test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
+
+notifications:
+  email: true
