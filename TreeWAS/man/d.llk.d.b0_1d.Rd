@@ -2,7 +2,7 @@
 % Please edit documentation in R/GRS_analysis_functions.R
 \name{d.llk.d.b0_1d}
 \alias{d.llk.d.b0_1d}
-\title{Helper function}
+\title{First derivative of the likelihood function with respect to b_0.}
 \usage{
 d.llk.d.b0_1d(b0, b1, x0, x1)
 }
@@ -17,6 +17,5 @@ d.llk.d.b0_1d(b0, b1, x0, x1)
 d.llk.d.b0_1d()}
 }
 \description{
-Helper function
+First derivative of the likelihood function with respect to b_0.
 }
-

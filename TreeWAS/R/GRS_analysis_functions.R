@@ -31,7 +31,7 @@ calculate_1d_prior <- function (
 }
 
 
-#' Helper function
+#' First derivative of the likelihood function with respect to b_0.
 #'
 #' @param b0 input
 #' @param b1 input
@@ -71,7 +71,7 @@ p0.func <- function(b0,b1,x) {
 }
 
 
-#' Helper function
+#' Likelihood function
 #'
 #' @param b0 input
 #' @param b1 input
@@ -255,3 +255,179 @@ get.posterior.node_1d <- function(
 
     return(out)
 }
+
+#' Function to prepare Tree table for analysis
+#'
+#' @param phens input
+#' @param tree input
+#' @param NODE.COUNT.LIMIT input
+#' @export
+#' @examples
+#' prepare_tree_table_grs()
+#' 
+
+prepare_tree_table_grs <- function(
+    phens=phens,
+    tree=tree,
+    NODE.COUNT.LIMIT=10
+) {
+
+    t <- tree
+    ## remove 'unclassifiable' node
+    t <- t[!t$coding %in% 99999,]
+
+    ## Check if we need to create Top node
+    top.nodes <- t[ ! t$parent_id %in% t$node_id,,drop=F]
+
+    if( nrow(top.nodes) > 1 ) {
+        ## create TOP node
+        top.node <- data.frame(
+            coding = -1,
+            meaning = "Top node",
+            node_id = 99999,
+            parent_id = 0,
+            selectable = 'N'
+        )
+
+        ## assing parent node to category nodes
+        t[t$node_id %in% top.nodes$node_id, 'parent_id'] <- '99999'
+        
+        ## Add Top node to tree
+        t <- rbind(t,top.node)
+    } else {
+
+        t <- rbind(t[ ! t$node_id %in% top.nodes$node_id,],
+                   top.nodes)
+    }
+        
+    map <- match(t$coding,colnames(phens))
+    colcounts <- colSums(phens)
+    t$counts <- colcounts[map]
+
+    ## create dummy nodes for those intermediate nodes that are selectable
+    dummy <- which( !is.na(t$counts) &
+                       t$node_id %in% t$parent_id &
+                           t$counts > 0)
+
+    if( length(dummy) > 0 ) {
+    
+        for( i in 1:length(dummy) ) {
+            node.id=t[dummy[i],'node_id']
+            node.cod=t[dummy[i],'coding']
+            node.mea=t[dummy[i],'meaning']
+            node.counts=t[dummy[i],'counts']
+        
+            new.node <- data.frame(
+                coding = node.cod,
+                meaning = node.mea,
+                node_id = paste(node.id,'_dummy',sep=''),
+                parent_id = node.id,
+                selectable = "Y",
+                counts = node.counts)
+        
+            t[dummy[i],'coding'] <- paste(node.cod,"_int",sep='')
+            t[dummy[i],'meaning'] <- paste(node.mea,"_int",sep='')
+            t[dummy[i],'selectable'] <- "N"
+            t[dummy[i],'counts'] <- NA
+            
+            t <- rbind(t,new.node)
+        }
+
+    }
+
+    ## assign node ID
+    t$ID <- 1:nrow(t)
+    t$Par <- t[match(t$parent_id,t$node_id),'ID']
+
+    i.ter <- t[which(!(t[,'ID'] %in% t[,'Par'])),'ID'];
+    i.par <- setdiff(t[,'ID'], i.ter);
+
+    ## place terminal nodes at the top
+    t <- rbind(t[i.ter,],
+                  t[i.par,])
+    t[nrow(t),'Par'] <- 0    
+        
+    t$ID <- 1:nrow(t)
+    t$Par <- t[match(t$parent_id,t$node_id),'ID']
+    t[nrow(t),'Par'] <- 0
+    i.ter <- t[which(!(t[,'ID'] %in% t[,'Par'])),'ID'];
+    i.par <- setdiff(t[,'ID'], i.ter);
+
+    ## sort tree and make sure it is in ascending order
+    t.ter <- t[t$ID %in% i.ter,]
+
+    t2 <- t[nrow(t),,drop=F]
+    cont <- TRUE
+
+    while(cont) {
+
+        child.ids <- t[t$Par %in% t2$ID,'ID']
+        child.ids <- child.ids[! child.ids %in% t2$ID ]
+        
+        t2 <- rbind(t[t$ID %in% child.ids,],
+                    t2
+                    )
+        
+        if(nrow(t2) == nrow(t)) cont <- FALSE
+    }
+
+    t <- rbind(t.ter,
+               t2[ ! t2$ID %in% t.ter$ID,])
+
+    ## relabel nodes
+    tree <- t
+    tree$ID <- 1:nrow(tree)
+    tree$Par <- tree[match(tree$parent_id,tree$node_id),'ID']
+    tree[nrow(tree),'Par'] <- 0
+    i.ter <- tree[which(!(tree[,'ID'] %in% tree[,'Par'])),'ID'];
+    i.par <- setdiff(tree[,'ID'], i.ter);
+
+    ## Filter nodes with observations below specified limit
+    tree$REMOVE <- FALSE
+    
+    for( i in 1:length(i.ter) ) {
+        if(is.na(tree[i.ter[i],'counts'])) {
+            tree[i.ter[i],'REMOVE'] <- TRUE
+        } else if(tree[i.ter[i],'counts'] <= NODE.COUNT.LIMIT) {        
+            tree[i.ter[i],'REMOVE'] <- TRUE
+        }
+    }
+    
+    for( i in 1:length(i.par) ) {
+        w.d <- which(tree[,'Par'] == i.par[i])
+        
+        if( all(tree[w.d,'REMOVE']) ) {
+            tree[i.par[i],'REMOVE'] <- TRUE
+        }
+    }
+    
+    tree <- tree[!tree$REMOVE,]
+    tree.id <- 1:nrow(tree)
+    tree.par <- tree.id[match(tree$Par,tree$ID)]
+    tree$ID <- tree.id
+    tree$Par <- tree.par
+    tree[nrow(tree),'Par'] <- 0
+    
+    i.ter <- tree[which(!(tree[,'ID'] %in% tree[,'Par'])),'ID'];
+    i.par <- setdiff(tree[,'ID'], i.ter);
+
+    ## sanity checks
+    NUM.NODES <- nrow(tree)
+    expected.node.ids <- 1:NUM.NODES
+    
+    if(!all(tree[,'ID'] == expected.node.ids)) {
+        stop("Node IDs are not compatible. Check that they are numeric and increasing bottom to top\n")
+    }
+    
+    if(!all(i.ter == 1:length(i.ter))) {
+        stop("terminal nodes must be first in the tree table\n")
+    }
+
+    tree <- tree[,c("ID","Par","coding","meaning")]
+    
+    return(tree)
+    
+
+}
+
+

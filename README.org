@@ -2,7 +2,12 @@
 #+AUTHOR:    Adrian Cortes
 #+EMAIL:     adrcort@gmail.com
 
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+
 This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122][here]] or available within this repo.
+
+** Install
 
 + The code is available as an R package. To install the package clone the repository and install:
 
@@ -14,21 +19,154 @@ or alternatively, do this from within an R session
 
 #+BEGIN_SRC R
   library(devtools)
-  install_github("ac257/TreeWAS/TreeWAS")
+  install_github("mcveanlab/TreeWAS/TreeWAS")
 #+END_SRC
 
-+ Run example dataset
+** Input File Formats
 
+Data for TreeWAS analysis is encoded in three files.
+
+*** Sample file
+
+Assumes two columns with header. First column has samples IDs and second column contains either a genotype (0/1/2) or a continuous variable such as a genetic risk score (GRS). Sample ID must be the first column.
+
+#+BEGIN_EXAMPLE
+ID GRS
+13380 2.91109682117209
+31132 3.58725581286855
+44601 4.0187625426125
+13621 4.25960701964853
+52339 3.38657230426473
+26307 4.27097017945458
+39118 3.72455637560711
+#+END_EXAMPLE
+
+*** Phenotype file
+
+A file with multiple columns and a header. One row per individual. The column *ID* contains sample IDs and it doesn't need to be the first column. All other columns are assumend to be phenotypes coded as 0 or 1, column names are phenotype codes which should be present in the tree file (matching column *coding* in the tree file).
+
+#+BEGIN_EXAMPLE
+ID R198 R104 M512 L720 M8414 L031 K802 S662 K267
+1 1 1 1 0 0 0 0 0 0 
+2 0 0 0 1 0 0 0 0 0 
+3 0 0 0 0 1 0 0 0 0 
+4 0 0 0 0 0 1 0 0 0 
+5 0 0 0 0 0 0 1 1 0 
+6 0 1 0 0 0 0 0 0 1 
+7 0 0 0 0 0 0 0 0 0 
+8 0 0 0 0 0 0 0 0 0 
+9 0 0 0 0 0 0 0 0 0 
+#+END_EXAMPLE
+
+*** Tree file
+
+File defining the topology of the diagnosis tree. These files can be downloaded from the UK Biobank Showcase website. For example, the tree describing the encoding of Non-cancer Illnesses (data-field 20002) is encoded using Data-Coding 6 of the UK Biobank. This file can be downloaded [[http://biobank.ctsu.ox.ac.uk/crystal/coding.cgi?id=6][here]]. File is assumed to be tab-delimited. A function provided in the package will parse and sort the tree for TreeWAS analysis. The first few lines of the tree for [[http://biobank.ctsu.ox.ac.uk/crystal/coding.cgi?id=19][Data-Coding 19]] (corresponding to the ICD-10 tree) are shown below.
+
+#+BEGIN_EXAMPLE
+coding	meaning	node_id	parent_id	selectable
+A00	A00 Cholera	286	23	N
+A000	A00.0 Cholera due to Vibrio cholerae 01, biovar cholerae	287	286	Y
+A001	A00.1 Cholera due to Vibrio cholerae 01, biovar el tor	288	286	Y
+A009	A00.9 Cholera, unspecified	289	286	Y
+A01	A01 Typhoid and paratyphoid fevers	290	23	N
+A010	A01.0 Typhoid fever	291	290	Y
+A011	A01.1 Paratyphoid fever A	292	290	Y
+A012	A01.2 Paratyphoid fever B	293	290	Y
+A013	A01.3 Paratyphoid fever C	294	290	Y
+#+END_EXAMPLE
+
+*** Sample inclusion file
+
+A list of sample IDs to include in the analysis can be parsed to the script with the =--keep= argument. We assume one sample ID per line.
+
+** Running TreeWAS
+
+Three scripts are provided to run TreeWAS analysis with different type of genetic variation and/or genetic models.
+
+*** Analysing a genetic risk score
+
+The script =grs_tree_analysis.R= performs TreeWAS analysis on a GRS. The script takes the following arguments:
+
+|-------------+-------------------------------------------------------------------------------------------------|
+| Argument    | Description                                                                                     |
+|-------------+-------------------------------------------------------------------------------------------------|
+| sample_file | Sample file. Cannot be null.                                                                    |
+| pheno_file  | Phenotype file. Cannot be null.                                                                 |
+| tree_file   | Tree file. Cannot be null.                                                                      |
+| outprefix   | Prefix to use for results filenames. Defaults to "out".                                         |
+| theta       | Prior on the mutation rate. Defaults to 1/3.                                                    |
+| p1          | Prior on the proportion of active nodes in the tree. Defaults to 0.001.                         |
+| keep        | Sample inclusion filename. Optional.                                                            |
+| num.cores   | Number of cores to use. Defaults to 1. If greater than one the =parallel= package will be used. |
+| b1_max_mag  | The prior is symmetric around zero. This parameter controls the range of the effect size.       |
+| b1_spac     | The grid size.                                                                                                 |
+|-------------+-------------------------------------------------------------------------------------------------|
+
+To do a GRS analysis on the test data, use the following command.
+
+#+NAME: GRS analysis
 #+BEGIN_SRC sh
-
-  ./grs_tree_analysis.R \
-    --sample_file=example_data/example_samplefile.txt \
-    --tree_file=example_data/tree_example_ICD10_Chap_VI.txt \
-    --pheno_file=example_data/example_pheno_file.txt \
-    --outprefix=test.res \
-    --num.cores=1
-
+  ./scripts/grs_tree_analysis.R \
+      --sample_file=example_data/sample_file_grs.txt \
+      --tree_file=example_data/tree_example_ICD10_Chap_VI.txt \
+      --pheno_file=example_data/phenotype_file.txt \
+      --outprefix=test_grs.res \
+      --num.cores=10
 #+END_SRC
+
+*** Case-control study 
+
+The scripts =cc_snp_tree_analysis.R= and =cc_snp_tree_analysis_additive.R= perform case-control assciation analysis. The scripts take the following arguments:
+
+|----------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+| Argument       | Description                                                                                                                             |
+|----------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+| sample_file    | Sample file. Cannot be null.                                                                                                            |
+| pheno_file     | Phenotype file. Cannot be null.                                                                                                         |
+| tree_file      | Tree file. Cannot be null.                                                                                                              |
+| outprefix      | Prefix to use for results filenames. Defaults to "out".                                                                                 |
+| theta          | Prior on the mutation rate. Defaults to 1/3.                                                                                            |
+| p1             | Prior on the proportion of active nodes in the tree. Defaults to 0.001.                                                                 |
+| keep           | Sample inclusion filename. Optional.                                                                                                    |
+| num.cores      | Number of cores to use. Defaults to 1. If greater than one the =parallel= package will be used.                                         |
+| b{1,2}_max_mag | The prior is symmetric around zero. This parameter controls the range of the effect sizes (b1 for the het genotype and b2 for the hom). |
+| b{1,2}_spac    | The grid size.                                                                                                                          |
+|----------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+
+To Run the analysis with the test data fitting an additive model do:
+
+#+NAME: CC analysis additive
+#+BEGIN_SRC sh
+  ./scripts/cc_snp_tree_analysis_additive.R \
+      --sample_file='example_data/sample_file_gen.txt' \
+      --tree_file='example_data/tree_example_ICD10_Chap_VI.txt' \
+      --pheno_file='example_data/phenotype_file.txt' \
+      --outprefix='test_gen.res' \
+      --b1_max_mag=2 \
+      --b1_spac=0.02 \
+      --num.cores=20
+#+END_SRC
+
+or with a full genetic model:
+
+#+NAME: CC analysis full genetic model
+#+BEGIN_SRC sh
+  ./scripts/cc_snp_tree_analysis.R \
+      --sample_file='example_data/sample_file_gen.txt' \
+      --tree_file='example_data/tree_example_ICD10_Chap_VI.txt' \
+      --pheno_file='example_data/phenotype_file.txt' \
+      --outprefix='test_gen2.res' \
+      --theta=0.33333 \
+      --p1=0.001 \
+      --b1_max_mag=3 \
+      --b2_max_mag=3 \
+      --b1_spac=0.02 \
+      --b2_spac=0.02 \
+      --num.cores=1
+#+END_SRC
+
+
+
 
 
 ** Citation
@@ -36,3 +174,7 @@ or alternatively, do this from within an R session
 If you use TreeWAS in your work, please cite us:
 
 Cortes A., et al. (2017) Bayesian analysis of genetic association across tree-structured routine healthcare data in the UK Biobank. bioRxiv 105122. doi: https://doi.org/10.1101/105122
+
+
+
+

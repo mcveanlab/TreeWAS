@@ -16,4 +16,3 @@ Wrapper function to use with parallel package
 calculate.llk.grid.wrapper()
 
 }
-

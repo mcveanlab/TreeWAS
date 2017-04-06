@@ -2,7 +2,7 @@
 % Please edit documentation in R/GRS_analysis_functions.R
 \name{llk_1d}
 \alias{llk_1d}
-\title{Helper function}
+\title{Likelihood function}
 \usage{
 llk_1d(b0, b1, x0, x1)
 }
@@ -17,6 +17,5 @@ llk_1d(b0, b1, x0, x1)
 llk_1d()}
 }
 \description{
-Helper function
+Likelihood function
 }
-

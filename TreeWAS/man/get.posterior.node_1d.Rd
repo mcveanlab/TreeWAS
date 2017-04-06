@@ -33,4 +33,3 @@ Estimate posterior probability and get MAP estimate
 get.posterior.node_1d()
 
 }
-

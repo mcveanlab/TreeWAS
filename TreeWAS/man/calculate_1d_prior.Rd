@@ -27,4 +27,3 @@ For use with GRS and additive genetic effects
 calculate_1d_prior()
 
 }
-

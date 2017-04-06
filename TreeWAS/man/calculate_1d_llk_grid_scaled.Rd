@@ -22,4 +22,3 @@ Calculate LLK over the grid
 calculate_1d_llk_grid_scaled() 
 
 }
-
