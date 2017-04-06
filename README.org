@@ -5,7 +5,7 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
-This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122][here]] or available within this repo.
+This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122][here]] or available within this repository.
 
 ** Install
 
@@ -43,7 +43,7 @@ ID GRS
 
 *** Phenotype file
 
-A file with multiple columns and a header. One row per individual. The column *ID* contains sample IDs and it doesn't need to be the first column. All other columns are assumend to be phenotypes coded as 0 or 1, column names are phenotype codes which should be present in the tree file (matching column *coding* in the tree file).
+A file with multiple columns and a header. One row per individual. The column *ID* contains sample IDs and it doesn't need to be the first column. All other columns are assumed to be phenotypes coded as 0 or 1, column names are phenotype codes which should be present in the tree file (matching column *coding* in the tree file).
 
 #+BEGIN_EXAMPLE
 ID R198 R104 M512 L720 M8414 L031 K802 S662 K267
@@ -116,7 +116,7 @@ To do a GRS analysis on the test data, use the following command.
 
 *** Case-control study 
 
-The scripts =cc_snp_tree_analysis.R= and =cc_snp_tree_analysis_additive.R= perform case-control assciation analysis. The scripts take the following arguments:
+The scripts =cc_snp_tree_analysis.R= and =cc_snp_tree_analysis_additive.R= perform case-control association analysis. The scripts take the following arguments:
 
 |----------------+-----------------------------------------------------------------------------------------------------------------------------------------|
 | Argument       | Description                                                                                                                             |
@@ -164,11 +164,7 @@ or with a full genetic model:
       --b2_spac=0.02 \
       --num.cores=1
 #+END_SRC
-
-
-
-
-
+         
 ** Citation
 
 If you use TreeWAS in your work, please cite us:
