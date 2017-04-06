@@ -32,13 +32,13 @@ Assumes two columns with header. First column has samples IDs and second column 
 
 #+BEGIN_EXAMPLE
 ID GRS
-13380 2.91109682117209
-31132 3.58725581286855
-44601 4.0187625426125
-13621 4.25960701964853
-52339 3.38657230426473
-26307 4.27097017945458
-39118 3.72455637560711
+1 2.91109682117209
+2 3.58725581286855
+3 4.0187625426125
+4 4.25960701964853
+5 3.38657230426473
+6 4.27097017945458
+7 3.72455637560711
 #+END_EXAMPLE
 
 *** Phenotype file
@@ -111,7 +111,7 @@ To do a GRS analysis on the test data, use the following command.
       --tree_file=example_data/tree_example_ICD10_Chap_VI.txt \
       --pheno_file=example_data/phenotype_file.txt \
       --outprefix=test_grs.res \
-      --num.cores=10
+      --num.cores=1
 #+END_SRC
 
 *** Case-control study 
@@ -144,7 +144,7 @@ To Run the analysis with the test data fitting an additive model do:
       --outprefix='test_gen.res' \
       --b1_max_mag=2 \
       --b1_spac=0.02 \
-      --num.cores=20
+      --num.cores=1
 #+END_SRC
 
 or with a full genetic model:
