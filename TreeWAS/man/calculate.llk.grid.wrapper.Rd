@@ -7,12 +7,13 @@
 calculate.llk.grid.wrapper(d)
 }
 \arguments{
-\item{d}{input}
+\item{d}{List of objects needed by calculate_1d_llk_grid_scaled function}
 }
 \description{
 Wrapper function to use with parallel package
 }
 \examples{
-calculate.llk.grid.wrapper()
+
+calculate.llk.grid.wrapper(d=d)
 
 }

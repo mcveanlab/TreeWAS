@@ -20,11 +20,15 @@ calculate.llk.grid_scaled_additive(prior, data, do.plot = FALSE,
 
 \item{saled}{input}
 }
+\value{
+a list
+}
 \description{
 Tree Analysis.
 Calculate llk grid for the additive genetic model.
 Scaled version
 }
 \examples{
-calculate.llk.grid_scaled_additive()
+calculate.llk.grid_scaled_additive(prior,data)
+
 }

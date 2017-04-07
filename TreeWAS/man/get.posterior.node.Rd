@@ -16,11 +16,15 @@ get.posterior.node(forward, backward, jt.prior, id = 1, plot = FALSE,
 
 \item{saled}{input}
 }
+\value{
+A data.frame.
+}
 \description{
 Tree Analysis.
 Function to check B algorithm and
 get credible sets
 }
 \examples{
-get.posterior.node()
+get.posterior.node(forward,backward,jt.prior)
+
 }

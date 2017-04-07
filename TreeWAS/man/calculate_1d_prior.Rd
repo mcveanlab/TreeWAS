@@ -2,10 +2,10 @@
 % Please edit documentation in R/GRS_analysis_functions.R
 \name{calculate_1d_prior}
 \alias{calculate_1d_prior}
-\title{Function to generate a 1D prior.
+\title{Function to generate a 1D non-local prior.
 For use with GRS and additive genetic effects}
 \usage{
-calculate_1d_prior(b1.range = c(-6, 6), spac.b1 = 0.01, mn.b1 = 0,
+calculate_1d_prior(b1.range = c(-4, 4), spac.b1 = 0.01, mn.b1 = 0,
   sd.b1 = 1, pi.1 = 0.001)
 }
 \arguments{
@@ -19,11 +19,14 @@ calculate_1d_prior(b1.range = c(-6, 6), spac.b1 = 0.01, mn.b1 = 0,
 
 \item{pi.1}{input}
 }
+\value{
+A list with objects b.grid, prior and val.
+}
 \description{
-Function to generate a 1D prior.
+Function to generate a 1D non-local prior.
 For use with GRS and additive genetic effects
 }
 \examples{
-calculate_1d_prior()
+calculate_1d_prior(b1.range=c(-4,4),spac.b1=0.01)
 
 }

@@ -14,6 +14,6 @@ get.posterior.node_additive(forward, backward, prior, id = 1, plot = FALSE,
 get.posterior.node_additive
 }
 \examples{
-get.posterior.node_additive()
+get.posterior.node_additive(forward,backward,prior)
 
 }

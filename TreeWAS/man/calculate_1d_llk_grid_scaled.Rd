@@ -4,21 +4,22 @@
 \alias{calculate_1d_llk_grid_scaled}
 \title{Calculate LLK over the grid}
 \usage{
-calculate_1d_llk_grid_scaled(prior, x0, x1, scaled = TRUE)
+calculate_1d_llk_grid_scaled(prior = NULL, x0 = NULL, x1 = NULL,
+  scaled = TRUE)
 }
 \arguments{
-\item{prior}{input}
+\item{prior}{1D prior}
 
-\item{x0}{input}
+\item{x0}{Values for unaffected individuals}
 
-\item{x1}{input}
+\item{x1}{Values for affected individuals}
 
-\item{scaled}{input}
+\item{scaled}{Boolean}
 }
 \description{
 Calculate LLK over the grid
 }
 \examples{
-calculate_1d_llk_grid_scaled() 
+calculate_1d_llk_grid_scaled(prior=prior,x0=x0,x1=x1,scaled=TRUE)
 
 }

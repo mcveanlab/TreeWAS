@@ -4,19 +4,20 @@
 \alias{calculate.integrated_1d_llk_scaled}
 \title{Function to sum over the LLK grid}
 \usage{
-calculate.integrated_1d_llk_scaled(prior, llk.surf, scaled = TRUE)
+calculate.integrated_1d_llk_scaled(prior = prior, llk.surf = llk.surf,
+  scaled = TRUE)
 }
 \arguments{
-\item{prior}{input}
+\item{prior}{Prior}
 
-\item{llk.surf}{input}
+\item{llk.surf}{log likelihood surface}
 
-\item{scaled}{input}
+\item{scaled}{boolean}
 }
 \description{
 Function to sum over the LLK grid
 }
 \examples{
-calculate.integrated_1d_llk_scaled()
+calculate.integrated_1d_llk_scaled(prior=prior,llk.surf=llk.surf)
 
 }

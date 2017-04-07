@@ -100,7 +100,7 @@ llk_1d <- function(b0,b1,x0,x1) {
 #' @export
 #'
 #' @examples
-#' calculate_1d_llk_grid_scaled(prior=prior,x0=x0,x1=x1,scaled=TRUE) 
+#' calculate_1d_llk_grid_scaled(prior=prior,x0=x0,x1=x1,scaled=TRUE)
 #'
 calculate_1d_llk_grid_scaled <- function(
     prior=NULL,x0=NULL,x1=NULL,scaled=TRUE
