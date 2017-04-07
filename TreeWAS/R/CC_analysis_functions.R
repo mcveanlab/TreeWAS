@@ -344,7 +344,7 @@ calculate_prior_2d <- function(
 #' 
 #' @examples
 #' calculate.llk.grid_scaled(jt.prior,data)
-
+#' 
 calculate.llk.grid_scaled <- function(
     jt.prior,
     data,
@@ -391,7 +391,7 @@ calculate.llk.grid_scaled <- function(
 #' 
 #' @examples
 #' calculate.integrated.llk_scale(jt.prior,llk.surf)
-
+#' 
 calculate.integrated.llk_scaled <- function(
     jt.prior,
     llk.surf,
@@ -425,7 +425,7 @@ calculate.integrated.llk_scaled <- function(
 #' 
 #' @examples
 #' get.posterior.node(forward,backward,jt.prior)
-
+#' 
 get.posterior.node <- function(
     forward,
     backward,
@@ -471,12 +471,18 @@ get.posterior.node <- function(
     }
     
     if(verbose) cat("\n\n");
+
+    spac1 <- abs(jt.prior$b1.grid[2]-jt.prior$b1.grid[1])
+    spac2 <- abs(jt.prior$b2.grid[2]-jt.prior$b2.grid[1])
+    
     out <- data.frame(
         max_b1=jt.prior$b1.grid[mx[1]],
         max_b2=jt.prior$b2.grid[mx[2]],
         summed_llk=log(sum(forward[[id]]$op*backward[[id]]$op))+forward[[id]]$lmx+backward[[id]]$lmx,
-        b1_ci_lhs=rg.1[1],b1_ci_rhs=rg.1[2],
-        b2_ci_lhs=rg.2[1],b2_ci_rhs=rg.2[2],
+        b1_ci_lhs=rg.1[1] - spac1/2,
+        b1_ci_rhs=rg.1[2] + spac1/2,
+        b2_ci_lhs=rg.2[1] - spac2/2,
+        b2_ci_rhs=rg.2[2] + spac2/2,
         POST_ACTIVE=post.active        
     )
 
@@ -500,7 +506,7 @@ get.posterior.node <- function(
 #'
 #' @examples
 #' cc_llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
-
+#' 
 cc_llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
     return(b0*sum(aff)+b1*aff[2]+b2*aff[3]-(aff[1]+unaf[1])*log(1+exp(b0))-(aff[2]+unaf[2])*log(1+exp(b0+b1))-(aff[3]+unaf[3])*log(1+exp(b0+b2)));
 }
@@ -520,7 +526,7 @@ cc_llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
 #'
 #' @examples
 #' cc_d.llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
-
+#' 
 cc_d.llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
     return((aff[1]+unaf[1])/(1+exp(-b0))+(aff[2]+unaf[2])/(1+exp(-(b0+b1)))+(aff[3]+unaf[3])/(1+exp(-(b0+b2)))-sum(aff));
 }

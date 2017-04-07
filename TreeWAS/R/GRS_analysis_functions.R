@@ -45,7 +45,6 @@ calculate_1d_prior <- function (
 #' 
 #' d.llk.d.b0_1d()
 #'
-
 d.llk.d.b0_1d <- function(b0=NULL,b1=NULL,x0=NULL,x1=NULL) {
     sum(1/(1+exp(b0+b1*x1))) - sum(1/(1+exp(-b0-b1*x0)))
 }
@@ -59,7 +58,6 @@ d.llk.d.b0_1d <- function(b0=NULL,b1=NULL,x0=NULL,x1=NULL) {
 #'
 #' p1.func() 
 #'
-
 p1.func <- function(b0,b1,x) {
     1/(1+exp(-(b0+b1*x)))
 }
@@ -73,7 +71,6 @@ p1.func <- function(b0,b1,x) {
 #'
 #' p0.func() 
 #'
-
 p0.func <- function(b0,b1,x) {
     1 - p1.func(b0,b1,x)
 }
@@ -88,7 +85,6 @@ p0.func <- function(b0,b1,x) {
 #'
 #' llk_1d() 
 #'
-
 llk_1d <- function(b0,b1,x0,x1) {
     sum(log(p1.func(b0,b1,x1))) + sum(log(p0.func(b0,b1,x0)))    
 }
@@ -106,7 +102,6 @@ llk_1d <- function(b0,b1,x0,x1) {
 #' @examples
 #' calculate_1d_llk_grid_scaled(prior=prior,x0=x0,x1=x1,scaled=TRUE) 
 #'
-
 calculate_1d_llk_grid_scaled <- function(
     prior=NULL,x0=NULL,x1=NULL,scaled=TRUE
 ) {
@@ -152,7 +147,6 @@ calculate_1d_llk_grid_scaled <- function(
 #'
 #' calculate.llk.grid.wrapper(d=d)
 #'
-
 calculate.llk.grid.wrapper <- function(
     d
 ) {
@@ -185,7 +179,6 @@ calculate.llk.grid.wrapper <- function(
 #' @examples
 #' calculate.integrated_1d_llk_scaled(prior=prior,llk.surf=llk.surf)
 #'
-
 calculate.integrated_1d_llk_scaled <- function(
     prior=prior,
     llk.surf=llk.surf,
@@ -224,7 +217,6 @@ calculate.integrated_1d_llk_scaled <- function(
 #' @examples
 #' get.posterior.node_1d(forward,backward,prior)
 #'
-
 get.posterior.node_1d <- function(
     forward,
     backward,
@@ -270,12 +262,14 @@ get.posterior.node_1d <- function(
     if (verbose) 
         cat("\n\n")
 
+    spac <- abs(prior$b.grid[2]-prior$b.grid[1])
+    
     out <- data.frame(
         max_b = prior$b.grid[mx[1]],
         summed_llk = log(sum(forward[[id]]$op * backward[[id]]$op)) + 
             forward[[id]]$lmx + backward[[id]]$lmx,
-        b_ci_lhs = rg[1], 
-        b_ci_rhs = rg[2],
+        b_ci_lhs = rg[1] - spac/2, 
+        b_ci_rhs = rg[2] + spac/2,
         POST_ACTIVE = post.active)
 
     return(out)

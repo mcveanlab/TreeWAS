@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' calculate.llk.grid_scaled_additive(prior,data)
-
+#' 
 calculate.llk.grid_scaled_additive <- function(
     prior,
     data,
@@ -57,7 +57,6 @@ calculate.llk.grid_scaled_additive <- function(
 #' @examples
 #' cc_d.llk_additive()
 #'
-
 cc_d.llk_additive <- function (b0, b1, aff, unaf) 
 {
     
@@ -80,7 +79,6 @@ cc_d.llk_additive <- function (b0, b1, aff, unaf)
 #' @examples
 #' cc_llk_additive()
 #'
-
 cc_llk_additive <- function(b0, b1, aff, unaf) 
 {
     return(b0 * sum(aff) + b1 * aff[2] + 2 * b1 * aff[3] - (aff[1] + 
@@ -99,7 +97,6 @@ cc_llk_additive <- function(b0, b1, aff, unaf)
 #' @examples
 #' calculate.integrated.llk_scaled_additive()
 #'
-
 calculate.integrated.llk_scaled_additive <- function(prior, llk.surf, scaled = TRUE) 
 {
     if (scaled) {
@@ -120,11 +117,12 @@ calculate.integrated.llk_scaled_additive <- function(prior, llk.surf, scaled = T
 #' get.posterior.node_additive
 #'
 #' @param arg input 
-#' @export
-#' @examples
-#' get.posterior.node_additive()
 #'
-
+#' @export
+#'
+#' @examples
+#' get.posterior.node_additive(forward,backward,prior)
+#'
 get.posterior.node_additive <- function(forward, backward, prior, id = 1, plot = FALSE, 
     return.ci = TRUE, verbose = FALSE, ci.level = 0.95, log.plot = TRUE) 
 {
@@ -153,20 +151,18 @@ get.posterior.node_additive <- function(forward, backward, prior, id = 1, plot =
             cat("\nCI b1(", ci.level, ") = ", paste(rg.1, collapse = " - "), 
                 sep = "")
     }
-    ## if (plot) {
-    ##     if (log.plot) 
-    ##         tmp <- log(tmp)
-    ##     image(x = jt.prior$b1.grid, y = jt.prior$b2.grid, z = tmp, 
-    ##         main = paste("Node", id), xlab = "B1", ylab = "B2")
-    ## }
+
     if (verbose) 
         cat("\n\n")
+
+    spac <- abs(prior$b.grid[2]-prior$b.grid[1])
+    
     out <- data.frame(
         max_b1 = prior$b.grid[mx[1]],
         summed_llk = log(sum(forward[[id]]$op * backward[[id]]$op)) + 
             forward[[id]]$lmx + backward[[id]]$lmx,
-        b1_ci_lhs = rg.1[1], 
-        b1_ci_rhs = rg.1[2],
+        b1_ci_lhs = rg.1[1] - spac/2, 
+        b1_ci_rhs = rg.1[2] + spac/2,
         POST_ACTIVE = as.numeric(post.active)
     )
 
