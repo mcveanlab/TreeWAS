@@ -14,7 +14,10 @@ get.posterior.node(forward, backward, jt.prior, id = 1, plot = FALSE,
 
 \item{llk.surf}{input}
 
-\item{saled}{input}
+\item{scaled}{input}
+}
+\value{
+A data.frame.
 }
 \description{
 Tree Analysis.
@@ -22,5 +25,6 @@ Function to check B algorithm and
 get credible sets
 }
 \examples{
-get.posterior.node()
+
 }
+

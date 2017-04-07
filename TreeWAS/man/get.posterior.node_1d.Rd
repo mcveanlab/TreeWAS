@@ -26,10 +26,13 @@ get.posterior.node_1d(forward, backward, prior, id = 1, plot = FALSE,
 
 \item{log.plot}{input}
 }
+\value{
+A data.frame with the following columns: max_b, summed_llk, b_ci_lhs, b_ci_rhs, POST_ACTIVE
+}
 \description{
 Estimate posterior probability and get MAP estimate
 }
 \examples{
-get.posterior.node_1d()
 
 }
+
