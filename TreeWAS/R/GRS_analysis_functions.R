@@ -1,4 +1,4 @@
-#' Function to generate a 1D prior.
+#' Function to generate a 1D non-local prior.
 #' For use with GRS and additive genetic effects
 #'
 #' @param b1.range input
@@ -6,13 +6,16 @@
 #' @param mn.b1 input
 #' @param sd.b1 input
 #' @param pi.1 input
-#' @export
-#' @examples
-#' calculate_1d_prior()
 #'
-
+#' @return A list with objects b.grid, prior and val.
+#' 
+#' @export
+#'
+#' @examples
+#' calculate_1d_prior(b1.range=c(-4,4),spac.b1=0.01)
+#'
 calculate_1d_prior <- function (
-    b1.range = c(-6, 6),
+    b1.range = c(-4,4),
     spac.b1 = 0.01,
     mn.b1 = 0,
     sd.b1 = 1,
@@ -31,16 +34,19 @@ calculate_1d_prior <- function (
 }
 
 
-#' First derivative of the likelihood function with respect to b_0.
-#'
+#' Function to calculate d(log likelihood)/db0
+#' 
 #' @param b0 input
 #' @param b1 input
 #' @param x0 input
 #' @param x1 input
+#'
+#' @return A numeric object
+#' 
 #' d.llk.d.b0_1d()
 #'
 
-d.llk.d.b0_1d <- function(b0,b1,x0,x1) {
+d.llk.d.b0_1d <- function(b0=NULL,b1=NULL,x0=NULL,x1=NULL) {
     sum(1/(1+exp(b0+b1*x1))) - sum(1/(1+exp(-b0-b1*x0)))
 }
 
@@ -50,6 +56,7 @@ d.llk.d.b0_1d <- function(b0,b1,x0,x1) {
 #' @param b0 input
 #' @param b1 input
 #' @param x input
+#'
 #' p1.func() 
 #'
 
@@ -63,6 +70,7 @@ p1.func <- function(b0,b1,x) {
 #' @param b0 input
 #' @param b1 input
 #' @param x input
+#'
 #' p0.func() 
 #'
 
@@ -77,6 +85,7 @@ p0.func <- function(b0,b1,x) {
 #' @param b1 input
 #' @param x0 input
 #' @param x1 input
+#'
 #' llk_1d() 
 #'
 
@@ -87,19 +96,26 @@ llk_1d <- function(b0,b1,x0,x1) {
 
 #' Calculate LLK over the grid
 #'
-#' @param prior input
-#' @param x0 input
-#' @param x1 input
-#' @param scaled input
+#' @param prior 1D prior
+#' @param x0 Values for unaffected individuals
+#' @param x1 Values for affected individuals
+#' @param scaled Boolean
+#'
 #' @export
+#'
 #' @examples
-#' calculate_1d_llk_grid_scaled() 
+#' calculate_1d_llk_grid_scaled(prior=prior,x0=x0,x1=x1,scaled=TRUE) 
 #'
 
 calculate_1d_llk_grid_scaled <- function(
-    prior,x0,x1,scaled=TRUE
+    prior=NULL,x0=NULL,x1=NULL,scaled=TRUE
 ) {
 
+    if( is.null(prior) | is.null(x0) | is.null(x1) ) {
+        msg <- "Missing input data. Check arguments. \n"
+        stop(msg)
+    }
+    
     to.fill <- 0
     if(scaled)
         to.fill <- 1
@@ -128,10 +144,13 @@ calculate_1d_llk_grid_scaled <- function(
 
 #' Wrapper function to use with parallel package
 #'
-#' @param d input
+#' @param d List of objects needed by calculate_1d_llk_grid_scaled function
+#'
 #' @export
+#'
 #' @examples
-#' calculate.llk.grid.wrapper()
+#'
+#' calculate.llk.grid.wrapper(d=d)
 #'
 
 calculate.llk.grid.wrapper <- function(
@@ -157,17 +176,19 @@ calculate.llk.grid.wrapper <- function(
 
 #' Function to sum over the LLK grid
 #'
-#' @param prior input
-#' @param llk.surf input
-#' @param scaled input
+#' @param prior Prior
+#' @param llk.surf log likelihood surface
+#' @param scaled boolean
+#'
 #' @export
+#'
 #' @examples
-#' calculate.integrated_1d_llk_scaled()
+#' calculate.integrated_1d_llk_scaled(prior=prior,llk.surf=llk.surf)
 #'
 
 calculate.integrated_1d_llk_scaled <- function(
-    prior,
-    llk.surf,
+    prior=prior,
+    llk.surf=llk.surf,
     scaled = TRUE
 ) {
     if (scaled) {
@@ -195,9 +216,13 @@ calculate.integrated_1d_llk_scaled <- function(
 #' @param verbose input
 #' @param ci.level input
 #' @param log.plot input
+#'
+#' @return A data.frame with the following columns: max_b, summed_llk, b_ci_lhs, b_ci_rhs, POST_ACTIVE
+#' 
 #' @export
+#'
 #' @examples
-#' get.posterior.node_1d()
+#' get.posterior.node_1d(forward,backward,prior)
 #'
 
 get.posterior.node_1d <- function(
@@ -261,9 +286,13 @@ get.posterior.node_1d <- function(
 #' @param phens input
 #' @param tree input
 #' @param NODE.COUNT.LIMIT input
+#'
+#' @return A data.frame with the tree data sorted for TreeWAS analysis
+#' 
 #' @export
+#'
 #' @examples
-#' prepare_tree_table_grs()
+#' prepare_tree_table_grs(phens=phens,tree=tree)
 #' 
 
 prepare_tree_table_grs <- function(
@@ -338,7 +367,6 @@ prepare_tree_table_grs <- function(
     ## assign node ID
     t$ID <- 1:nrow(t)
     t$Par <- t[match(t$parent_id,t$node_id),'ID']
-
     i.ter <- t[which(!(t[,'ID'] %in% t[,'Par'])),'ID'];
     i.par <- setdiff(t[,'ID'], i.ter);
 
@@ -355,10 +383,8 @@ prepare_tree_table_grs <- function(
 
     ## sort tree and make sure it is in ascending order
     t.ter <- t[t$ID %in% i.ter,]
-
     t2 <- t[nrow(t),,drop=F]
     cont <- TRUE
-
     while(cont) {
 
         child.ids <- t[t$Par %in% t2$ID,'ID']
@@ -426,8 +452,6 @@ prepare_tree_table_grs <- function(
     tree <- tree[,c("ID","Par","coding","meaning")]
     
     return(tree)
-    
-
 }
 
 

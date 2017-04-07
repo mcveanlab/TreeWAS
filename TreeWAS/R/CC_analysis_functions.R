@@ -3,9 +3,13 @@
 #' @param phens input
 #' @param tree input
 #' @param NODE.COUNT.LIMIT input
+#'
+#' @return A data.frame with tree information sorted for TreeWAS analysis.
+#' 
 #' @export
+#'
 #' @examples
-#' prepare_tree_table()
+#' prepare_tree_table(phens=phens,tree=tree,samples=samples)
 #'
 
 prepare_tree_table <- function(
@@ -170,19 +174,6 @@ prepare_tree_table <- function(
     i.ter <- tree[which(!(tree[,'ID'] %in% tree[,'Par'])),'ID'];
     i.par <- setdiff(tree[,'ID'], i.ter);
 
-    ## tree <- rbind(tree[i.ter,],
-    ##               tree[i.par,])
-
-    ## tree.id <- 1:nrow(tree)
-    ## tree.par <- tree.id[match(tree$Par,tree$ID)]
-    ## tree$ID <- tree.id
-    ## tree$Par <- tree.par
-    ## tree[nrow(tree),'Par'] <- 0
-    
-    ## i.ter <- tree[which(!(tree[,'ID'] %in% tree[,'Par'])),'ID'];
-    ## i.par <- setdiff(tree[,'ID'], i.ter);
-
-
     ## sanity checks
     NUM.NODES <- nrow(tree)
     expected.node.ids <- 1:NUM.NODES
@@ -251,8 +242,6 @@ prepare_tree_table <- function(
         stop(msg)
     }
 
-    ## tmp <- apply(tree[,5:10],1,sum)
-
     tree.id <- 1:nrow(tree)
     tree.par <- tree.id[match(tree$Par,tree$ID)]
 
@@ -268,8 +257,8 @@ prepare_tree_table <- function(
 
 
 #' Non-local prior for genetic effects. Scaled and reparametrised
-#'
 #' Non-local prior of correlated effect sizes
+#'
 #' @param b1.range input b1 range
 #' @param b2.range input b2 range
 #' @param spac.b1 input b1 grid density
@@ -281,7 +270,11 @@ prepare_tree_table <- function(
 #' @param cor input correlation
 #' @param k input k
 #' @param pi.1 input pi_1
+#'
+#' @return A list
+#' 
 #' @export
+#'
 #' @examples
 #' calculate_prior_2d()
 
@@ -302,29 +295,29 @@ calculate_prior_2d <- function(
 ) {
     require("mvtnorm")
     
-    b1.grid<-seq(b1.range[1], b1.range[2], by=spac.b1);
-    b2.grid<-seq(b2.range[1], b2.range[2], by=spac.b2);
-    jt.prior<-array(0,c(length(b1.grid), length(b2.grid)));
+    b1.grid <- seq(b1.range[1], b1.range[2], by=spac.b1);
+    b2.grid <- seq(b2.range[1], b2.range[2], by=spac.b2);
+    jt.prior <- array(0,c(length(b1.grid), length(b2.grid)));
     
-    sig<-array(0,c(2,2));
-    sig[1,1]<-sd.b1^2;
-    sig[2,2]<-sd.b2^2;
-    sig[1,2]<-cor*sd.b1*sd.b2;
-    sig[2,1]<-sig[1,2];
+    sig <- array(0,c(2,2));
+    sig[1,1] <- sd.b1^2;
+    sig[2,2] <- sd.b2^2;
+    sig[1,2] <- cor*sd.b1*sd.b2;
+    sig[2,1] <- sig[1,2];
     
     for (i in 1:length(b1.grid)) for (j in 1:length(b2.grid)) {
         d1 <- sqrt(b1.grid[i]^2 + b2.grid[j]^2/4)^k;
         e1 <- 1;
         if ((b1.grid[i]*b2.grid[j])<0 | abs(b2.grid[j])<abs(b1.grid[i])) e1 <- f.off;
-        jt.prior[i,j]<-dmvnorm(c(b1.grid[i], b2.grid[j]), c(mn.b1, mn.b2), sig)*d1*e1;
+        jt.prior[i,j] <- dmvnorm(c(b1.grid[i], b2.grid[j]), c(mn.b1, mn.b2), sig)*d1*e1;
     }
 
-    w0.1<-which.min(abs(b1.grid));
-    w0.2<-which.min(abs(b2.grid));
-    jt.prior[w0.1, w0.2]<-0;
-    s1<-sum(jt.prior);
-    jt.prior<-jt.prior*pi.1/s1;
-    jt.prior[w0.1, w0.2]<-1-pi.1;
+    w0.1 <- which.min(abs(b1.grid));
+    w0.2 <- which.min(abs(b2.grid));
+    jt.prior[w0.1, w0.2] <- 0;
+    s1 <- sum(jt.prior);
+    jt.prior <- jt.prior*pi.1/s1;
+    jt.prior[w0.1, w0.2] <- 1-pi.1;
 
     if (do.plot) {
         image(x=b1.grid, y=b2.grid, z=log(jt.prior));
@@ -345,9 +338,12 @@ calculate_prior_2d <- function(
 #' @param debug input
 #' @param saled input
 #'
+#' @return A list.
+#' 
 #' @export
+#' 
 #' @examples
-#' calculate.llk.grid_scaled()
+#' calculate.llk.grid_scaled(jt.prior,data)
 
 calculate.llk.grid_scaled <- function(
     jt.prior,
@@ -357,10 +353,10 @@ calculate.llk.grid_scaled <- function(
     scaled=TRUE
 ) {
 
-    to.fill<-0;
-    if (scaled) to.fill<-1;
-    op<-array(to.fill,c(length(jt.prior$b1.grid), length(jt.prior$b2.grid)));
-    b0.est<-array(0, dim(op));
+    to.fill <- 0;
+    if (scaled) to.fill <- 1;
+    op <- array(to.fill,c(length(jt.prior$b1.grid), length(jt.prior$b2.grid)));
+    b0.est <- array(0, dim(op));
 
     if (debug) {
         return(list(op=op, b0.est=b0.est, lmx=0));
@@ -368,13 +364,13 @@ calculate.llk.grid_scaled <- function(
 
     for (i in 1:length(jt.prior$b1.grid)) for (j in 1:length(jt.prior$b2.grid)) {
         tmp <- uniroot(cc_d.llk, c(-100, 100), b1=jt.prior$b1.grid[i], b2=jt.prior$b2.grid[j], aff=data[4:6], unaf=data[1:3]);
-        b0.est[i,j]<-tmp$root;
+        b0.est[i,j] <- tmp$root;
         op[i,j] <- cc_llk(b0=b0.est[i,j], b1=jt.prior$b1.grid[i], b2=jt.prior$b2.grid[j], aff=data[4:6], unaf=data[1:3]);
     }
 
     if (do.plot) image(x=jt.prior$b1.grid, y=jt.prior$b2.grid, z=op, main="LLK", xlab="B.het", ylab="B.hom");
     
-    mx<-max(op);
+    mx <- max(op);
     if (scaled) op<-exp(op-mx);
     
     return(list(op=op, b0.est=b0.est, lmx=mx));
@@ -389,9 +385,12 @@ calculate.llk.grid_scaled <- function(
 #' @param llk.surf input
 #' @param saled input
 #'
+#' @return A numeric value.
+#' 
 #' @export
+#' 
 #' @examples
-#' calculate.integrated.llk_scale()
+#' calculate.integrated.llk_scale(jt.prior,llk.surf)
 
 calculate.integrated.llk_scaled <- function(
     jt.prior,
@@ -400,13 +399,13 @@ calculate.integrated.llk_scaled <- function(
 ) {
 
     if (scaled) {	## Here, max of LLK.surf is 1 - this is NOT logged
-        llk.sum<-sum(jt.prior$jt.prior*llk.surf$op);
+        llk.sum <- sum(jt.prior$jt.prior*llk.surf$op);
         return(llk.sum);
     } else {
-        mx<-max(llk.surf$op);
-        op<-llk.surf$op-mx;
-        op.n<-exp(op);
-        llk.sum<-log(sum(op.n*jt.prior$jt.prior));
+        mx <- max(llk.surf$op);
+        op <- llk.surf$op-mx;
+        op.n <- exp(op);
+        llk.sum <- log(sum(op.n*jt.prior$jt.prior));
         return(llk.sum+mx);
     }
 }
@@ -420,9 +419,12 @@ calculate.integrated.llk_scaled <- function(
 #' @param llk.surf input
 #' @param saled input
 #'
+#' @return A data.frame.
+#' 
 #' @export
+#' 
 #' @examples
-#' get.posterior.node()
+#' get.posterior.node(forward,backward,jt.prior)
 
 get.posterior.node <- function(
     forward,
@@ -436,35 +438,35 @@ get.posterior.node <- function(
     log.plot=TRUE
 ) {
 
-    tmp<-forward[[id]]$op*backward[[id]]$op;
-    tmp<-tmp/sum(tmp);
+    tmp <- forward[[id]]$op*backward[[id]]$op;
+    tmp <- tmp/sum(tmp);
 
     post.null <- tmp[null.id[1],null.id[2]]
     post.active <- 1 - post.null
 
     ## Posterior | node active
     tmp[null.id[1],null.id[2]] <- 0
-    tmp<-tmp/sum(tmp);       
+    tmp <- tmp/sum(tmp);       
     
-    mx<-arrayInd(which.max(tmp), dim(tmp));
+    mx <- arrayInd(which.max(tmp), dim(tmp));
     if(verbose) cat("\nNode ", id);
     if(verbose) cat("\nMax at b1 = ", jt.prior$b1.grid[mx[1]], ", b2 = ", jt.prior$b2.grid[mx[2]]);
     if(verbose) cat("\nSummed LLK = ", log(sum(forward[[id]]$op*backward[[id]]$op))+forward[[id]]$lmx+backward[[id]]$lmx);
 
     ## return the C.I. conditional on node being active
     if (return.ci) {
-        oo<-order(tmp, decreasing=T);
-        cs<-cumsum(tmp[arrayInd(oo, dim(tmp))]);
-        w.ci<-oo[c(1,which(cs<=ci.level))];
-        inds<-arrayInd(w.ci, dim(tmp));
-        rg.1<-range(jt.prior$b1.grid[inds[,1]]);
-        rg.2<-range(jt.prior$b2.grid[inds[,2]]);
+        oo <- order(tmp, decreasing=T);
+        cs <- cumsum(tmp[arrayInd(oo, dim(tmp))]);
+        w.ci <- oo[c(1,which(cs<=ci.level))];
+        inds <- arrayInd(w.ci, dim(tmp));
+        rg.1 <- range(jt.prior$b1.grid[inds[,1]]);
+        rg.2 <- range(jt.prior$b2.grid[inds[,2]]);
         if(verbose) cat("\nCI b1(", ci.level, ") = ", paste(rg.1, collapse=" - "), sep="");
         if(verbose) cat("\nCI b2(", ci.level, ") = ", paste(rg.2, collapse=" - "), sep="");
     }
 
     if (plot) {
-        if(log.plot) tmp<-log(tmp);
+        if(log.plot) tmp <- log(tmp);
         image(x=jt.prior$b1.grid, y=jt.prior$b2.grid, z=tmp, main=paste("Node", id), xlab="B1", ylab="B2");
     }
     
@@ -483,7 +485,7 @@ get.posterior.node <- function(
 }	
 
 
-#' Function to calculate log likelihood for logistic 
+#' Function to calculate log likelihood for logistic risk and full genetic
 #' model given set of parameters.
 #'
 #' @param b0 input
@@ -491,29 +493,34 @@ get.posterior.node <- function(
 #' @param b2 input
 #' @param aff input
 #' @param unaf input
+#'
+#' @return numeric value
+#' 
 #' @export
+#'
 #' @examples
-#' cc_llk()
+#' cc_llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
 
-
-cc_llk <- function(b0, b1, b2, aff, unaf) {
+cc_llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
     return(b0*sum(aff)+b1*aff[2]+b2*aff[3]-(aff[1]+unaf[1])*log(1+exp(b0))-(aff[2]+unaf[2])*log(1+exp(b0+b1))-(aff[3]+unaf[3])*log(1+exp(b0+b2)));
 }
 
 #' Function to calculate d(log likelihood)/db0
-#' for logistic model given b1, b2, data
+#' for logistic risk and full genetic model given b0, b1, b2, and data
 #'
 #' @param b0 input
 #' @param b1 input
 #' @param b2 input
 #' @param aff input
 #' @param unaf input
+#'
+#' @return a nuemeric value
+#' 
 #' @export
+#'
 #' @examples
-#' cc_d.llk()
+#' cc_d.llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
 
-
-cc_d.llk <- function(b0, b1, b2, aff, unaf) {
+cc_d.llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
     return((aff[1]+unaf[1])/(1+exp(-b0))+(aff[2]+unaf[2])/(1+exp(-(b0+b1)))+(aff[3]+unaf[3])/(1+exp(-(b0+b2)))-sum(aff));
 }
-

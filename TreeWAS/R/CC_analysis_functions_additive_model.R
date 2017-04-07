@@ -8,9 +8,12 @@
 #' @param debug input
 #' @param saled input
 #'
+#' @return a list
+#' 
 #' @export
+#'
 #' @examples
-#' calculate.llk.grid_scaled_additive()
+#' calculate.llk.grid_scaled_additive(prior,data)
 
 calculate.llk.grid_scaled_additive <- function(
     prior,
@@ -37,8 +40,8 @@ calculate.llk.grid_scaled_additive <- function(
 
     if (do.plot) plot(x=prior$b.grid, y=op, xlab="B.additive", ylab="LLK");
     
-    mx<-max(op);
-    if (scaled) op<-exp(op-mx);
+    mx <- max(op);
+    if (scaled) op <- exp(op-mx);
     
     return(list(op=op, b0.est=b0.est, lmx=mx));
 }
