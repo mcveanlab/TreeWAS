@@ -10,11 +10,26 @@ get.posterior.node(forward, backward, jt.prior, id = 1, plot = FALSE,
   return.ci = TRUE, verbose = FALSE, ci.level = 0.95, log.plot = TRUE)
 }
 \arguments{
+\item{forward}{TODO}
+
+\item{backward}{TODO}
+
 \item{jt.prior}{input}
 
-\item{llk.surf}{input}
+\item{id}{TODO}
 
-\item{saled}{input}
+\item{plot}{TODO}
+
+\item{return.ci}{TODO}
+
+\item{verbose}{TODO}
+
+\item{ci.level}{TODO}
+
+\item{log.plot}{TODO}
+}
+\value{
+A data.frame.
 }
 \description{
 Tree Analysis.
@@ -22,5 +37,6 @@ Function to check B algorithm and
 get credible sets
 }
 \examples{
-get.posterior.node()
+
 }
+

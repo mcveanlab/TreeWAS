@@ -8,7 +8,7 @@
 #' @param pi.1 input
 #'
 #' @return A list with objects b.grid, prior and val.
-#' 
+#'
 #' @export
 #'
 #' @examples
@@ -29,21 +29,21 @@ calculate_1d_prior <- function (
     s1 <- sum(prior)
     prior <- prior * pi.1 / s1
     prior[w0] <- 1 - pi.1
-    
+
     return(list(b.grid = b1.grid, prior = prior, val.0 = w0))
 }
 
 
 #' Function to calculate d(log likelihood)/db0
-#' 
+#'
 #' @param b0 input
 #' @param b1 input
 #' @param x0 input
 #' @param x1 input
 #'
 #' @return A numeric object
-#' 
-#' d.llk.d.b0_1d()
+#'
+#' @examples
 #'
 d.llk.d.b0_1d <- function(b0=NULL,b1=NULL,x0=NULL,x1=NULL) {
     sum(1/(1+exp(b0+b1*x1))) - sum(1/(1+exp(-b0-b1*x0)))
@@ -56,7 +56,6 @@ d.llk.d.b0_1d <- function(b0=NULL,b1=NULL,x0=NULL,x1=NULL) {
 #' @param b1 input
 #' @param x input
 #'
-#' p1.func() 
 #'
 p1.func <- function(b0,b1,x) {
     1/(1+exp(-(b0+b1*x)))
@@ -69,7 +68,7 @@ p1.func <- function(b0,b1,x) {
 #' @param b1 input
 #' @param x input
 #'
-#' p0.func() 
+#' @examples
 #'
 p0.func <- function(b0,b1,x) {
     1 - p1.func(b0,b1,x)
@@ -83,10 +82,10 @@ p0.func <- function(b0,b1,x) {
 #' @param x0 input
 #' @param x1 input
 #'
-#' llk_1d() 
+#' @examples
 #'
 llk_1d <- function(b0,b1,x0,x1) {
-    sum(log(p1.func(b0,b1,x1))) + sum(log(p0.func(b0,b1,x0)))    
+    sum(log(p1.func(b0,b1,x1))) + sum(log(p0.func(b0,b1,x0)))
 }
 
 
@@ -100,7 +99,6 @@ llk_1d <- function(b0,b1,x0,x1) {
 #' @export
 #'
 #' @examples
-#' calculate_1d_llk_grid_scaled(prior=prior,x0=x0,x1=x1,scaled=TRUE) 
 #'
 calculate_1d_llk_grid_scaled <- function(
     prior=NULL,x0=NULL,x1=NULL,scaled=TRUE
@@ -110,12 +108,12 @@ calculate_1d_llk_grid_scaled <- function(
         msg <- "Missing input data. Check arguments. \n"
         stop(msg)
     }
-    
+
     to.fill <- 0
     if(scaled)
         to.fill <- 1
-    
-    op <- array(to.fill,c(length(prior$b.grid)))                
+
+    op <- array(to.fill,c(length(prior$b.grid)))
     b0.est <- array(0,dim(op))
 
     for(i in 1:length(prior$b.grid)) {
@@ -145,25 +143,22 @@ calculate_1d_llk_grid_scaled <- function(
 #'
 #' @examples
 #'
-#' calculate.llk.grid.wrapper(d=d)
 #'
 calculate.llk.grid.wrapper <- function(
     d
 ) {
-    
-    library(TreeWAS)
 
     x0 <- d$x0
     x1 <- d$x1
     prior <- d$prior
-    
+
     tmp <- calculate_1d_llk_grid_scaled(
         d$prior,
         d$x0,
         d$x1,
         scaled=TRUE
     )
-    
+
     return(tmp)
 }
 
@@ -177,7 +172,6 @@ calculate.llk.grid.wrapper <- function(
 #' @export
 #'
 #' @examples
-#' calculate.integrated_1d_llk_scaled(prior=prior,llk.surf=llk.surf)
 #'
 calculate.integrated_1d_llk_scaled <- function(
     prior=prior,
@@ -211,18 +205,17 @@ calculate.integrated_1d_llk_scaled <- function(
 #' @param log.plot input
 #'
 #' @return A data.frame with the following columns: max_b, summed_llk, b_ci_lhs, b_ci_rhs, POST_ACTIVE
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' get.posterior.node_1d(forward,backward,prior)
 #'
 get.posterior.node_1d <- function(
     forward,
     backward,
     prior,
     id = 1,
-    plot = FALSE, 
+    plot = FALSE,
     return.ci = TRUE,
     verbose = FALSE,
     ci.level = 0.95,
@@ -235,12 +228,12 @@ get.posterior.node_1d <- function(
     tmp[null.id] <- 0
     tmp <- tmp/sum(tmp)
     mx <- arrayInd(which.max(tmp), dim(tmp))
-    if (verbose) 
+    if (verbose)
         cat("\nNode ", id)
-    if (verbose) 
+    if (verbose)
         cat("\nMax at b1 = ", prior$b.grid[mx[1]])
-    if (verbose) 
-        cat("\nSummed LLK = ", log(sum(forward[[id]]$op * backward[[id]]$op)) + 
+    if (verbose)
+        cat("\nSummed LLK = ", log(sum(forward[[id]]$op * backward[[id]]$op)) +
             forward[[id]]$lmx + backward[[id]]$lmx)
     if (return.ci) {
         oo <- order(tmp, decreasing = T)
@@ -249,26 +242,26 @@ get.posterior.node_1d <- function(
         inds <- arrayInd(w.ci, dim(tmp))
         rg <- range(prior$b.grid[inds[, 1]])
 
-        if (verbose) 
-            cat("\nCI b1(", ci.level, ") = ", paste(rg, collapse = " - "), 
-                sep = "")      
+        if (verbose)
+            cat("\nCI b1(", ci.level, ") = ", paste(rg, collapse = " - "),
+                sep = "")
     }
     if (plot) {
-        if (log.plot) 
+        if (log.plot)
             tmp <- log(tmp)
-        plot(x = prior$b.grid, y = tmp, 
+        plot(x = prior$b.grid, y = tmp,
              main = paste("Node", id), xlab = "B1", ylab = "log(post)")
     }
-    if (verbose) 
+    if (verbose)
         cat("\n\n")
 
     spac <- abs(prior$b.grid[2]-prior$b.grid[1])
-    
+
     out <- data.frame(
         max_b = prior$b.grid[mx[1]],
-        summed_llk = log(sum(forward[[id]]$op * backward[[id]]$op)) + 
+        summed_llk = log(sum(forward[[id]]$op * backward[[id]]$op)) +
             forward[[id]]$lmx + backward[[id]]$lmx,
-        b_ci_lhs = rg[1] - spac/2, 
+        b_ci_lhs = rg[1] - spac/2,
         b_ci_rhs = rg[2] + spac/2,
         POST_ACTIVE = post.active)
 
@@ -282,12 +275,11 @@ get.posterior.node_1d <- function(
 #' @param NODE.COUNT.LIMIT input
 #'
 #' @return A data.frame with the tree data sorted for TreeWAS analysis
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' prepare_tree_table_grs(phens=phens,tree=tree)
-#' 
+#'
 
 prepare_tree_table_grs <- function(
     phens=phens,
@@ -314,7 +306,7 @@ prepare_tree_table_grs <- function(
 
         ## assing parent node to category nodes
         t[t$node_id %in% top.nodes$node_id, 'parent_id'] <- '99999'
-        
+
         ## Add Top node to tree
         t <- rbind(t,top.node)
     } else {
@@ -322,7 +314,7 @@ prepare_tree_table_grs <- function(
         t <- rbind(t[ ! t$node_id %in% top.nodes$node_id,],
                    top.nodes)
     }
-        
+
     map <- match(t$coding,colnames(phens))
     colcounts <- colSums(phens)
     t$counts <- colcounts[map]
@@ -333,13 +325,13 @@ prepare_tree_table_grs <- function(
                            t$counts > 0)
 
     if( length(dummy) > 0 ) {
-    
+
         for( i in 1:length(dummy) ) {
             node.id=t[dummy[i],'node_id']
             node.cod=t[dummy[i],'coding']
             node.mea=t[dummy[i],'meaning']
             node.counts=t[dummy[i],'counts']
-        
+
             new.node <- data.frame(
                 coding = node.cod,
                 meaning = node.mea,
@@ -347,12 +339,12 @@ prepare_tree_table_grs <- function(
                 parent_id = node.id,
                 selectable = "Y",
                 counts = node.counts)
-        
+
             t[dummy[i],'coding'] <- paste(node.cod,"_int",sep='')
             t[dummy[i],'meaning'] <- paste(node.mea,"_int",sep='')
             t[dummy[i],'selectable'] <- "N"
             t[dummy[i],'counts'] <- NA
-            
+
             t <- rbind(t,new.node)
         }
 
@@ -367,8 +359,8 @@ prepare_tree_table_grs <- function(
     ## place terminal nodes at the top
     t <- rbind(t[i.ter,],
                   t[i.par,])
-    t[nrow(t),'Par'] <- 0    
-        
+    t[nrow(t),'Par'] <- 0
+
     t$ID <- 1:nrow(t)
     t$Par <- t[match(t$parent_id,t$node_id),'ID']
     t[nrow(t),'Par'] <- 0
@@ -383,11 +375,11 @@ prepare_tree_table_grs <- function(
 
         child.ids <- t[t$Par %in% t2$ID,'ID']
         child.ids <- child.ids[! child.ids %in% t2$ID ]
-        
+
         t2 <- rbind(t[t$ID %in% child.ids,],
                     t2
                     )
-        
+
         if(nrow(t2) == nrow(t)) cont <- FALSE
     }
 
@@ -404,47 +396,47 @@ prepare_tree_table_grs <- function(
 
     ## Filter nodes with observations below specified limit
     tree$REMOVE <- FALSE
-    
+
     for( i in 1:length(i.ter) ) {
         if(is.na(tree[i.ter[i],'counts'])) {
             tree[i.ter[i],'REMOVE'] <- TRUE
-        } else if(tree[i.ter[i],'counts'] <= NODE.COUNT.LIMIT) {        
+        } else if(tree[i.ter[i],'counts'] <= NODE.COUNT.LIMIT) {
             tree[i.ter[i],'REMOVE'] <- TRUE
         }
     }
-    
+
     for( i in 1:length(i.par) ) {
         w.d <- which(tree[,'Par'] == i.par[i])
-        
+
         if( all(tree[w.d,'REMOVE']) ) {
             tree[i.par[i],'REMOVE'] <- TRUE
         }
     }
-    
+
     tree <- tree[!tree$REMOVE,]
     tree.id <- 1:nrow(tree)
     tree.par <- tree.id[match(tree$Par,tree$ID)]
     tree$ID <- tree.id
     tree$Par <- tree.par
     tree[nrow(tree),'Par'] <- 0
-    
+
     i.ter <- tree[which(!(tree[,'ID'] %in% tree[,'Par'])),'ID'];
     i.par <- setdiff(tree[,'ID'], i.ter);
 
     ## sanity checks
     NUM.NODES <- nrow(tree)
     expected.node.ids <- 1:NUM.NODES
-    
+
     if(!all(tree[,'ID'] == expected.node.ids)) {
         stop("Node IDs are not compatible. Check that they are numeric and increasing bottom to top\n")
     }
-    
+
     if(!all(i.ter == 1:length(i.ter))) {
         stop("terminal nodes must be first in the tree table\n")
     }
 
     tree <- tree[,c("ID","Par","coding","meaning")]
-    
+
     return(tree)
 }
 

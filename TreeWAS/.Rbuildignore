@@ -1,2 +1,13 @@
+# R project
 ^.*\.Rproj$
 ^\.Rproj\.user$
+
+# bash scripts
+^buildLocally.sh$
+
+# git
+^\.gitignore$
+^\.gitattributes$
+
+# testthat
+^tests/testthat/Rplots.pdf$

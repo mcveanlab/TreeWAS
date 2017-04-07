@@ -8,12 +8,28 @@ get.posterior.node_additive(forward, backward, prior, id = 1, plot = FALSE,
   return.ci = TRUE, verbose = FALSE, ci.level = 0.95, log.plot = TRUE)
 }
 \arguments{
-\item{arg}{input}
+\item{forward}{TODO}
+
+\item{backward}{TODO}
+
+\item{prior}{TODO}
+
+\item{id}{TODO}
+
+\item{plot}{TODO}
+
+\item{return.ci}{TODO}
+
+\item{verbose}{TODO}
+
+\item{ci.level}{TODO}
+
+\item{log.plot}{TODO}
 }
 \description{
 get.posterior.node_additive
 }
 \examples{
-get.posterior.node_additive()
 
 }
+

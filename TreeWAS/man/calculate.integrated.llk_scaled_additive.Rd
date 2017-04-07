@@ -17,6 +17,6 @@ calculate.integrated.llk_scaled_additive(prior, llk.surf, scaled = TRUE)
 calculate.integrated.llk_scaled_additive
 }
 \examples{
-calculate.integrated.llk_scaled_additive()
 
 }
+
