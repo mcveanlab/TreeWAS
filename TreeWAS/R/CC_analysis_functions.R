@@ -390,8 +390,8 @@ calculate.llk.grid_scaled <- function(
 #' @export
 #' 
 #' @examples
-#' calculate.integrated.llk_scale(jt.prior,llk.surf)
-#' 
+#' calculate.integrated.llk_scaled(jt.prior,llk.surf)
+#'
 calculate.integrated.llk_scaled <- function(
     jt.prior,
     llk.surf,

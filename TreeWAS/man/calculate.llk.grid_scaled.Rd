@@ -20,11 +20,15 @@ calculate.llk.grid_scaled(jt.prior, data, do.plot = FALSE, debug = FALSE,
 
 \item{saled}{input}
 }
+\value{
+A list.
+}
 \description{
 Tree Analysis.
 Calculate llk grid.
 Scaled version
 }
 \examples{
-calculate.llk.grid_scaled()
+calculate.llk.grid_scaled(jt.prior,data)
+
 }

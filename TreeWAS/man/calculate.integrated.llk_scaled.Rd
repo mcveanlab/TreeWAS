@@ -15,11 +15,15 @@ calculate.integrated.llk_scaled(jt.prior, llk.surf, scaled = TRUE)
 
 \item{saled}{input}
 }
+\value{
+A numeric value.
+}
 \description{
 Tree Analysis.
 Calculate integrated likelihood
 Scaled version
 }
 \examples{
-calculate.integrated.llk_scale()
+calculate.integrated.llk_scaled(jt.prior,llk.surf)
+
 }

@@ -2,10 +2,10 @@
 % Please edit documentation in R/CC_analysis_functions.R
 \name{cc_llk}
 \alias{cc_llk}
-\title{Function to calculate log likelihood for logistic 
+\title{Function to calculate log likelihood for logistic risk and full genetic
 model given set of parameters.}
 \usage{
-cc_llk(b0, b1, b2, aff, unaf)
+cc_llk(b0 = b0, b1 = b1, b2 = b2, aff = aff, unaf = unaf)
 }
 \arguments{
 \item{b0}{input}
@@ -18,10 +18,14 @@ cc_llk(b0, b1, b2, aff, unaf)
 
 \item{unaf}{input}
 }
+\value{
+numeric value
+}
 \description{
-Function to calculate log likelihood for logistic 
+Function to calculate log likelihood for logistic risk and full genetic
 model given set of parameters.
 }
 \examples{
-cc_llk()
+cc_llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
+
 }

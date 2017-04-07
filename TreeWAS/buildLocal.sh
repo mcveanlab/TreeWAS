@@ -2,7 +2,9 @@
 # Building package
 R CMD build  .
 
-PKG_TARBALL=TreeWAS_0.0.0.9000.tar.gz
+TREEWAS_VERSION=$( cat DESCRIPTION | grep Version | sed -e "s/Version: //g")
+PKG_TARBALL=TreeWAS_${TREEWAS_VERSION}.tar.gz
+
 # Checking package
 R CMD check "${PKG_TARBALL}" --as-cran; CHECK_RET=r-devel
 
