@@ -13,10 +13,13 @@ prepare_tree_table_grs(phens = phens, tree = tree, NODE.COUNT.LIMIT = 10)
 
 \item{NODE.COUNT.LIMIT}{input}
 }
+\value{
+A data.frame with the tree data sorted for TreeWAS analysis
+}
 \description{
 Function to prepare Tree table for analysis
 }
 \examples{
-prepare_tree_table_grs()
 
 }
+

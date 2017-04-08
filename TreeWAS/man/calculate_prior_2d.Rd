@@ -2,7 +2,8 @@
 % Please edit documentation in R/CC_analysis_functions.R
 \name{calculate_prior_2d}
 \alias{calculate_prior_2d}
-\title{Non-local prior for genetic effects. Scaled and reparametrised}
+\title{Non-local prior for genetic effects. Scaled and reparametrised
+Non-local prior of correlated effect sizes}
 \usage{
 calculate_prior_2d(b1.range = c(-10, 10), b2.range = c(-10, 10),
   spac.b1 = 0.1, spac.b2 = 0.1, mn.b1 = 0, mn.b2 = 0, sd.b1 = 2,
@@ -32,9 +33,14 @@ calculate_prior_2d(b1.range = c(-10, 10), b2.range = c(-10, 10),
 
 \item{pi.1}{input pi_1}
 }
+\value{
+A list
+}
 \description{
+Non-local prior for genetic effects. Scaled and reparametrised
 Non-local prior of correlated effect sizes
 }
 \examples{
-calculate_prior_2d()
+
 }
+

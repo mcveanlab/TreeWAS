@@ -11,9 +11,12 @@ p0.func(b0, b1, x)
 
 \item{b1}{input}
 
-\item{x}{input
-p0.func()}
+\item{x}{input}
 }
 \description{
 Helper function
 }
+\examples{
+
+}
+

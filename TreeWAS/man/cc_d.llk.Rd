@@ -3,9 +3,9 @@
 \name{cc_d.llk}
 \alias{cc_d.llk}
 \title{Function to calculate d(log likelihood)/db0
-for logistic model given b1, b2, data}
+for logistic risk and full genetic model given b0, b1, b2, and data}
 \usage{
-cc_d.llk(b0, b1, b2, aff, unaf)
+cc_d.llk(b0 = b0, b1 = b1, b2 = b2, aff = aff, unaf = unaf)
 }
 \arguments{
 \item{b0}{input}
@@ -18,10 +18,14 @@ cc_d.llk(b0, b1, b2, aff, unaf)
 
 \item{unaf}{input}
 }
+\value{
+a nuemeric value
+}
 \description{
 Function to calculate d(log likelihood)/db0
-for logistic model given b1, b2, data
+for logistic risk and full genetic model given b0, b1, b2, and data
 }
 \examples{
-cc_d.llk()
+
 }
+

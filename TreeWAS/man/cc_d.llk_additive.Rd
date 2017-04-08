@@ -19,6 +19,6 @@ cc_d.llk_additive(b0, b1, aff, unaf)
 cc_d.llk_additive
 }
 \examples{
-cc_d.llk_additive()
 
 }
+

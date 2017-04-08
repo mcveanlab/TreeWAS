@@ -13,7 +13,10 @@ calculate.integrated.llk_scaled(jt.prior, llk.surf, scaled = TRUE)
 
 \item{llk.surf}{input}
 
-\item{saled}{input}
+\item{scaled}{input}
+}
+\value{
+A numeric value.
 }
 \description{
 Tree Analysis.
@@ -21,5 +24,6 @@ Calculate integrated likelihood
 Scaled version
 }
 \examples{
-calculate.integrated.llk_scale()
+
 }
+

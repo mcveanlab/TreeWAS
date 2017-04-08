@@ -2,9 +2,9 @@
 % Please edit documentation in R/GRS_analysis_functions.R
 \name{d.llk.d.b0_1d}
 \alias{d.llk.d.b0_1d}
-\title{First derivative of the likelihood function with respect to b_0.}
+\title{Function to calculate d(log likelihood)/db0}
 \usage{
-d.llk.d.b0_1d(b0, b1, x0, x1)
+d.llk.d.b0_1d(b0 = NULL, b1 = NULL, x0 = NULL, x1 = NULL)
 }
 \arguments{
 \item{b0}{input}
@@ -13,9 +13,15 @@ d.llk.d.b0_1d(b0, b1, x0, x1)
 
 \item{x0}{input}
 
-\item{x1}{input
-d.llk.d.b0_1d()}
+\item{x1}{input}
+}
+\value{
+A numeric object
 }
 \description{
-First derivative of the likelihood function with respect to b_0.
+Function to calculate d(log likelihood)/db0
 }
+\examples{
+
+}
+
