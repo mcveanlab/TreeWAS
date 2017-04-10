@@ -5,6 +5,10 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
+[[https://travis-ci.org/mcveanlab/TreeWAS][https://travis-ci.org/mcveanlab/TreeWAS.svg?branch=master]]
+
+[[https://opensource.org/licenses/MIT][https://img.shields.io/badge/License-MIT-yellow.svg]]
+
 
 This repository contains R code to perform TreeWAS analysis. For a full description of the method see preprint [[http://biorxiv.org/content/early/2017/02/01/105122][here]] or available within this repository.
 
