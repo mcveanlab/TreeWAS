@@ -13,9 +13,12 @@ llk_1d(b0, b1, x0, x1)
 
 \item{x0}{input}
 
-\item{x1}{input
-llk_1d()}
+\item{x1}{input}
 }
 \description{
 Likelihood function
 }
+\examples{
+
+}
+

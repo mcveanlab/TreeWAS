@@ -2,14 +2,15 @@
 #'
 #' @param phens input
 #' @param tree input
+#' @param samples TODO
 #' @param NODE.COUNT.LIMIT input
+#' @param NUM.CASES.MIN TODO
 #'
 #' @return A data.frame with tree information sorted for TreeWAS analysis.
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' prepare_tree_table(phens=phens,tree=tree,samples=samples)
 #'
 
 prepare_tree_table <- function(
@@ -34,7 +35,7 @@ prepare_tree_table <- function(
 
     if( NODE.COUNT.LIMIT < NUM.CASES.MIN )
         NODE.COUNT.LIMIT <- NUM.CASES.MIN
-    
+
     t <- tree
 
     ## remove 'unclassifiable' node
@@ -56,7 +57,7 @@ prepare_tree_table <- function(
 
         ## assing parent node to category nodes
         t[t$parent_id %in% 0, 'parent_id'] <- '99999'
-        
+
         ## Add Top node to tree
         t <- rbind(t,top.node)
     } else {
@@ -67,20 +68,20 @@ prepare_tree_table <- function(
     map <- match(t$coding,colnames(phens))
     colcounts <- colSums(phens)
     t$counts <- colcounts[map]
-    
+
     ## create dummy nodes for those intermediate nodes that are selectable
     dummy <- which( !is.na(t$counts) &
                        t$node_id %in% t$parent_id &
                            t$counts > 0)
 
     if( length(dummy) > 0 ) {
-    
+
         for( i in 1:length(dummy) ) {
             node.id=t[dummy[i],'node_id']
             node.cod=t[dummy[i],'coding']
             node.mea=t[dummy[i],'meaning']
             node.counts=t[dummy[i],'counts']
-            
+
             new.node <- data.frame(
                 coding = node.cod,
                 meaning = node.mea,
@@ -88,12 +89,12 @@ prepare_tree_table <- function(
                 parent_id = node.id,
                 selectable = "Y",
                 counts = node.counts)
-        
+
             t[dummy[i],'coding'] <- paste(node.cod,"_int",sep='')
             t[dummy[i],'meaning'] <- paste(node.mea,"_int",sep='')
             t[dummy[i],'selectable'] <- "N"
             t[dummy[i],'counts'] <- NA
-            
+
             t <- rbind(t,new.node)
         }
     }
@@ -108,8 +109,8 @@ prepare_tree_table <- function(
     ## place terminal nodes at the top
     t <- rbind(t[i.ter,],
                   t[i.par,])
-    t[nrow(t),'Par'] <- 0    
-        
+    t[nrow(t),'Par'] <- 0
+
     t$ID <- 1:nrow(t)
     t$Par <- t[match(t$parent_id,t$node_id),'ID']
     t[nrow(t),'Par'] <- 0
@@ -126,11 +127,11 @@ prepare_tree_table <- function(
 
         child.ids <- t[t$Par %in% t2$ID,'ID']
         child.ids <- child.ids[! child.ids %in% t2$ID ]
-        
+
         t2 <- rbind(t[t$ID %in% child.ids,],
                     t2
                     )
-        
+
         if(nrow(t2) == nrow(t)) cont <- FALSE
     }
 
@@ -147,41 +148,41 @@ prepare_tree_table <- function(
 
     ## Filter nodes with observations below specified limit
     tree$REMOVE <- FALSE
-    
+
     for( i in 1:length(i.ter) ) {
         if(is.na(tree[i.ter[i],'counts'])) {
             tree[i.ter[i],'REMOVE'] <- TRUE
-        } else if(tree[i.ter[i],'counts'] <= NODE.COUNT.LIMIT) {        
+        } else if(tree[i.ter[i],'counts'] <= NODE.COUNT.LIMIT) {
             tree[i.ter[i],'REMOVE'] <- TRUE
         }
     }
-    
+
     for( i in 1:length(i.par) ) {
         w.d <- which(tree[,'Par'] == i.par[i])
-        
+
         if( all(tree[w.d,'REMOVE']) ) {
             tree[i.par[i],'REMOVE'] <- TRUE
         }
     }
-    
+
     tree <- tree[!tree$REMOVE,]
     tree.id <- 1:nrow(tree)
     tree.par <- tree.id[match(tree$Par,tree$ID)]
     tree$ID <- tree.id
     tree$Par <- tree.par
     tree[nrow(tree),'Par'] <- 0
-    
+
     i.ter <- tree[which(!(tree[,'ID'] %in% tree[,'Par'])),'ID'];
     i.par <- setdiff(tree[,'ID'], i.ter);
 
     ## sanity checks
     NUM.NODES <- nrow(tree)
     expected.node.ids <- 1:NUM.NODES
-    
+
     if(!all(tree[,'ID'] == expected.node.ids)) {
         stop("Node IDs are not compatible. Check that they are numeric and increasing bottom to top\n")
     }
-    
+
     if(!all(i.ter == 1:length(i.ter))) {
         stop("terminal nodes must be first in the tree table\n")
     }
@@ -222,7 +223,7 @@ prepare_tree_table <- function(
             tree[i,5:10] <- node.data
         }
     }
-    
+
     for( i in i.par ) {
 
         w.d <- which(tree[,'Par'] == i)
@@ -270,21 +271,22 @@ prepare_tree_table <- function(
 #' @param cor input correlation
 #' @param k input k
 #' @param pi.1 input pi_1
+#' @param f.off input TODO
+#' @param do.plot input TODO
 #'
 #' @return A list
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' calculate_prior_2d()
-
+#'
 calculate_prior_2d <- function(
     b1.range=c(-10,10),
     b2.range=c(-10,10),
     spac.b1=0.1,
     spac.b2=0.1,
     mn.b1=0,
-    mn.b2=0, 
+    mn.b2=0,
     sd.b1=2,
     sd.b2=4,
     cor=0.5,
@@ -294,17 +296,17 @@ calculate_prior_2d <- function(
     do.plot=FALSE
 ) {
     require("mvtnorm")
-    
+
     b1.grid <- seq(b1.range[1], b1.range[2], by=spac.b1);
     b2.grid <- seq(b2.range[1], b2.range[2], by=spac.b2);
     jt.prior <- array(0,c(length(b1.grid), length(b2.grid)));
-    
+
     sig <- array(0,c(2,2));
     sig[1,1] <- sd.b1^2;
     sig[2,2] <- sd.b2^2;
     sig[1,2] <- cor*sd.b1*sd.b2;
     sig[2,1] <- sig[1,2];
-    
+
     for (i in 1:length(b1.grid)) for (j in 1:length(b2.grid)) {
         d1 <- sqrt(b1.grid[i]^2 + b2.grid[j]^2/4)^k;
         e1 <- 1;
@@ -336,15 +338,14 @@ calculate_prior_2d <- function(
 #' @param data input
 #' @param do.plot input
 #' @param debug input
-#' @param saled input
+#' @param scaled input
 #'
 #' @return A list.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
-#' calculate.llk.grid_scaled(jt.prior,data)
-#' 
+#'
 calculate.llk.grid_scaled <- function(
     jt.prior,
     data,
@@ -369,10 +370,10 @@ calculate.llk.grid_scaled <- function(
     }
 
     if (do.plot) image(x=jt.prior$b1.grid, y=jt.prior$b2.grid, z=op, main="LLK", xlab="B.het", ylab="B.hom");
-    
+
     mx <- max(op);
     if (scaled) op<-exp(op-mx);
-    
+
     return(list(op=op, b0.est=b0.est, lmx=mx));
 }
 
@@ -383,15 +384,14 @@ calculate.llk.grid_scaled <- function(
 #'
 #' @param jt.prior input
 #' @param llk.surf input
-#' @param saled input
+#' @param scaled input
 #'
 #' @return A numeric value.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
-#' calculate.integrated.llk_scale(jt.prior,llk.surf)
-#' 
+#'
 calculate.integrated.llk_scaled <- function(
     jt.prior,
     llk.surf,
@@ -415,17 +415,22 @@ calculate.integrated.llk_scaled <- function(
 #' Function to check B algorithm and
 #' get credible sets
 #'
+#' @param forward TODO
+#' @param backward TODO
 #' @param jt.prior input
-#' @param llk.surf input
-#' @param saled input
+#' @param id TODO
+#' @param plot TODO
+#' @param return.ci TODO
+#' @param verbose TODO
+#' @param ci.level TODO
+#' @param log.plot TODO
 #'
 #' @return A data.frame.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
-#' get.posterior.node(forward,backward,jt.prior)
-#' 
+#'
 get.posterior.node <- function(
     forward,
     backward,
@@ -446,8 +451,8 @@ get.posterior.node <- function(
 
     ## Posterior | node active
     tmp[null.id[1],null.id[2]] <- 0
-    tmp <- tmp/sum(tmp);       
-    
+    tmp <- tmp/sum(tmp);
+
     mx <- arrayInd(which.max(tmp), dim(tmp));
     if(verbose) cat("\nNode ", id);
     if(verbose) cat("\nMax at b1 = ", jt.prior$b1.grid[mx[1]], ", b2 = ", jt.prior$b2.grid[mx[2]]);
@@ -469,12 +474,12 @@ get.posterior.node <- function(
         if(log.plot) tmp <- log(tmp);
         image(x=jt.prior$b1.grid, y=jt.prior$b2.grid, z=tmp, main=paste("Node", id), xlab="B1", ylab="B2");
     }
-    
+
     if(verbose) cat("\n\n");
 
     spac1 <- abs(jt.prior$b1.grid[2]-jt.prior$b1.grid[1])
     spac2 <- abs(jt.prior$b2.grid[2]-jt.prior$b2.grid[1])
-    
+
     out <- data.frame(
         max_b1=jt.prior$b1.grid[mx[1]],
         max_b2=jt.prior$b2.grid[mx[2]],
@@ -483,12 +488,12 @@ get.posterior.node <- function(
         b1_ci_rhs=rg.1[2] + spac1/2,
         b2_ci_lhs=rg.2[1] - spac2/2,
         b2_ci_rhs=rg.2[2] + spac2/2,
-        POST_ACTIVE=post.active        
+        POST_ACTIVE=post.active
     )
 
     return(out)
 
-}	
+}
 
 
 #' Function to calculate log likelihood for logistic risk and full genetic
@@ -501,12 +506,11 @@ get.posterior.node <- function(
 #' @param unaf input
 #'
 #' @return numeric value
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' cc_llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
-#' 
+#'
 cc_llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
     return(b0*sum(aff)+b1*aff[2]+b2*aff[3]-(aff[1]+unaf[1])*log(1+exp(b0))-(aff[2]+unaf[2])*log(1+exp(b0+b1))-(aff[3]+unaf[3])*log(1+exp(b0+b2)));
 }
@@ -521,12 +525,11 @@ cc_llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
 #' @param unaf input
 #'
 #' @return a nuemeric value
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' cc_d.llk(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf)
-#' 
+#'
 cc_d.llk <- function(b0=b0, b1=b1, b2=b2, aff=aff, unaf=unaf) {
     return((aff[1]+unaf[1])/(1+exp(-b0))+(aff[2]+unaf[2])/(1+exp(-(b0+b1)))+(aff[3]+unaf[3])/(1+exp(-(b0+b2)))-sum(aff));
 }

@@ -18,7 +18,10 @@ calculate.llk.grid_scaled(jt.prior, data, do.plot = FALSE, debug = FALSE,
 
 \item{debug}{input}
 
-\item{saled}{input}
+\item{scaled}{input}
+}
+\value{
+A list.
 }
 \description{
 Tree Analysis.
@@ -26,5 +29,6 @@ Calculate llk grid.
 Scaled version
 }
 \examples{
-calculate.llk.grid_scaled()
+
 }
+

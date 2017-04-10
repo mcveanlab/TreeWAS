@@ -12,12 +12,19 @@ prepare_tree_table(phens = phens, tree = tree, samples = samples,
 
 \item{tree}{input}
 
+\item{samples}{TODO}
+
 \item{NODE.COUNT.LIMIT}{input}
+
+\item{NUM.CASES.MIN}{TODO}
+}
+\value{
+A data.frame with tree information sorted for TreeWAS analysis.
 }
 \description{
 Function to prepare Tree table for analysis
 }
 \examples{
-prepare_tree_table()
 
 }
+
