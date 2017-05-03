@@ -266,8 +266,6 @@ if(use.parallel) {
     }
 }
 
-save.image("test.rdata")
-
 ## First calculate LLK under model with no active states and prior on this
 llk.full.null<-rep(0, nrow(tree));
 for (i in i.ter) {
