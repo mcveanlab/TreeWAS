@@ -222,11 +222,11 @@ b1.range = c(-b1_max_mag,b1_max_mag)
 b2.range = c(-b2_max_mag,b2_max_mag)
 
 jt.prior <- calculate_prior_2d(
-    pi.1=p1,
-    spac.b1=b1.spac,
-    spac.b2=b2.spac,
-    b1.range=b1.range,
-    b2.range=b2.range
+    pi.1     = p1,
+    spac.b1  = b1.spac,
+    spac.b2  = b2.spac,
+    b1.range = b1.range,
+    b2.range = b2.range
 );
 
 ## Transitions
@@ -240,7 +240,7 @@ do.backwards <- TRUE;
 scaled <- TRUE;
 
 #Find 'null model' entry in beta grid
-null.id<-jt.prior$val.0;
+null.id <- jt.prior$val.0;
 
 #Set up LLK surface for each node and fill in terminal nodes
 calculate.llk.grid.wrapper <- function(i,tree,i.ter,jt.prior,debug,scaled) {
@@ -273,52 +273,52 @@ for (i in i.ter) {
 }
 
 for (i in i.par) {
-    w.d<-which(tree[,2]==i);
-    llk.full.null[i]<-sum(llk.full.null[w.d])+length(w.d)*logp00;
+    w.d <- which(tree[,2]==i);
+    llk.full.null[i] <- sum(llk.full.null[w.d]) + length(w.d) * logp00;
 }
 
-llk.full.null.mrca<-llk.full.null[nrow(tree)]+log(1-p1);
-l.p.full.null<-log(1-p1)+(nrow(tree)-1)*logp00;
+llk.full.null.mrca <- llk.full.null[nrow(tree)] + log(1-p1);
+l.p.full.null <- log(1-p1) + (nrow(tree)-1) * logp00;
 
-llk.tree<-array(0, c(nrow(tree), 3));
-colnames(llk.tree)<-c("LLK.0", "LLK.1", "Max.LLK.alt");         
+llk.tree <- array(0, c(nrow(tree), 3));
+colnames(llk.tree) <- c("LLK.0", "LLK.1", "Max.LLK.alt");         
 
 ## Start with terminal nodes
 for (i in i.ter) {
-    llk.tree[i,1]<-log(llk.surf.tree[[i]]$op[null.id[1], null.id[2]])+llk.surf.tree[[i]]$lmx;
-    llk.tree[i,2]<-calculate.integrated.llk_scaled(jt.prior, llk.surf.tree[[i]], scaled=scaled);
-    llk.tree[i,3]<-llk.surf.tree[[i]]$lmx;
+    llk.tree[i,1] <- log(llk.surf.tree[[i]]$op[null.id[1], null.id[2]]) + llk.surf.tree[[i]]$lmx;
+    llk.tree[i,2] <- calculate.integrated.llk_scaled(jt.prior, llk.surf.tree[[i]], scaled=scaled);
+    llk.tree[i,3] <- llk.surf.tree[[i]]$lmx;
 }
 
 ## Things needed for backwards version
 if (do.backwards) {  
-        g.surf.tree<-list();
+        g.surf.tree <- list();
 }
 
 ## Now do parents
 for (i in i.par) {
     ## Find daughters
-    w.d<-which(tree[,2]==i);
+    w.d <- which(tree[,2]==i);
     
-    tmp<-array(1, dim(llk.surf.tree[[1]]$op));
-    s1<-0;
+    tmp <- array(1, dim(llk.surf.tree[[1]]$op));
+    s1 <- 0;
 
     for (j in w.d) {
-        tmp.part<-(p.stay*llk.surf.tree[[j]]$op+p.switch*llk.tree[j,2]);
-        tmp<-tmp*tmp.part;
+        tmp.part <- (p.stay * llk.surf.tree[[j]]$op + p.switch * llk.tree[j,2]);
+        tmp <- tmp * tmp.part;
         if (do.backwards) {
-            gmx<-max(tmp.part);
-            g.surf.tree[[j]]<-list(op=tmp.part/gmx, lmx=log(gmx)+llk.surf.tree[[j]]$lmx);
+            gmx <- max(tmp.part);
+            g.surf.tree[[j]] <- list(op=tmp.part/gmx, lmx=log(gmx) + llk.surf.tree[[j]]$lmx);
         }
-        s1<-s1+llk.surf.tree[[j]]$lmx;
+        s1 <- s1 + llk.surf.tree[[j]]$lmx;
     }
-    mx<-max(tmp);
-    tmp<-tmp/mx;
+    mx <- max(tmp);
+    tmp <- tmp/mx;
         
-    llk.surf.tree[[i]]<-list(op=tmp, lmx=s1+log(mx));
-    llk.tree[i,1]<-log(llk.surf.tree[[i]]$op[null.id[1], null.id[2]])+llk.surf.tree[[i]]$lmx;
-    llk.tree[i,3]<-llk.surf.tree[[i]]$lmx;
-    llk.tree[i,2]<-calculate.integrated.llk_scaled(jt.prior, llk.surf.tree[[i]], scaled=scaled);
+    llk.surf.tree[[i]] <- list(op=tmp, lmx=s1+log(mx));
+    llk.tree[i,1] <- log(llk.surf.tree[[i]]$op[null.id[1], null.id[2]]) + llk.surf.tree[[i]]$lmx;
+    llk.tree[i,3] <- llk.surf.tree[[i]]$lmx;
+    llk.tree[i,2] <- calculate.integrated.llk_scaled(jt.prior, llk.surf.tree[[i]], scaled=scaled);
 }
 
 mrca <- nrow(tree);
@@ -326,10 +326,10 @@ llk.full.mrca <- log(llk.tree[mrca,2])+llk.tree[mrca,3];
 
 
 ## Get BF
-tmp<-c(llk.full.mrca, llk.full.null.mrca);
-mx<-max(tmp);
-tmp2<-mx+log(exp(tmp[1]-mx)-exp(tmp[2]-mx))-llk.full.null.mrca;
-tmp3<-l.p.full.null-log(1-exp(l.p.full.null));
+tmp <- c(llk.full.mrca, llk.full.null.mrca);
+mx <- max(tmp);
+tmp2 <- mx+log(exp(tmp[1]-mx)-exp(tmp[2]-mx))-llk.full.null.mrca;
+tmp3 <- l.p.full.null-log(1-exp(l.p.full.null));
 log10_treeBF <- (tmp2 + tmp3)/log(10)
 
 cat("\n\nlog10(TreeBF) ",log10_treeBF,"\n\n",sep='')
