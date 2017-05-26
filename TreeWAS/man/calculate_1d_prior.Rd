@@ -30,4 +30,3 @@ For use with GRS and additive genetic effects
 calculate_1d_prior(b1.range=c(-4,4),spac.b1=0.01)
 
 }
-

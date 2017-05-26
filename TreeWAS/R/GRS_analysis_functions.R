@@ -134,6 +134,53 @@ calculate_1d_llk_grid_scaled <- function(
     return(list(op=op, b0.est=b0.est, lmx=mx))
 }
 
+#' Calculate LLK over the grid with approximation
+#'
+#' @param prior 1D prior
+#' @param x0 Values for unaffected individuals
+#' @param x1 Values for affected individuals
+#'
+#' @export
+#'
+#' @examples
+#'
+calculate_1d_llk_grid_scaled_approx <- function(
+    prior=NULL,x0=NULL,x1=NULL
+) {
+
+    pheno <- c(rep(0,length(x0)),rep(1,length(x1)))
+    gt <- c(x0,x1)
+    
+    ## conf1 <- rnorm(nrow(code.p),0,1)
+    
+    ## ## Find null MLE
+    ## tmp3 <- glm(code.p[,1] ~  conf1, family="binomial");
+    
+    ## ## Get confounder values
+    ## v0 <- tmp3$coef[2]*conf1
+    v0 <- rep(0,length(pheno))
+
+    ## Find MLE conditional on null confounder values
+    tmp4 <- glm(pheno ~ gt, family="binomial", offset=v0);
+    
+    ## Get inverse covariance matrix for point estimates
+    vc1 <- vcov(tmp4);
+    s1 <- solve(vc1[-1,-1]);
+    
+    b1.grid <- prior$b.grid
+    b.mle <- tmp4$coef[-1]
+
+    surf.apx <- (b1.grid - b.mle)^2*s1/2;
+
+    mx <- max(-surf.apx)
+    s2 <- exp(-surf.apx - mx)
+
+    s2 <- array(s2,c(length(prior$b.grid)))
+    
+    return(list(op=s2, lmx=mx))
+}
+
+
 
 #' Wrapper function to use with parallel package
 #'
@@ -157,6 +204,32 @@ calculate.llk.grid.wrapper <- function(
         d$x0,
         d$x1,
         scaled=TRUE
+    )
+
+    return(tmp)
+}
+
+#' Wrapper function to use with parallel package uses the approximation
+#'
+#' @param d List of objects needed by calculate_1d_llk_grid_scaled function
+#'
+#' @export
+#'
+#' @examples
+#'
+#'
+calculate.llk.grid.wrapper_approx <- function(
+    d
+) {
+
+    x0 <- d$x0
+    x1 <- d$x1
+    prior <- d$prior
+
+    tmp <- calculate_1d_llk_grid_scaled_approx(
+        d$prior,
+        d$x0,
+        d$x1
     )
 
     return(tmp)
