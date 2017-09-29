@@ -1,0 +1,11 @@
+bibentry(
+  bibtype = 'Article',
+  title = '',
+  author = c(person('A'),
+             person('B')),
+  year = 2017,
+  journal = 'bioRxiv',
+  doi = '',
+  publisher = '',
+  url = ''
+)
