@@ -20,7 +20,7 @@
 #' N_by_M = N * M
 #' phe = matrix(round(round(rexp(N_by_M)/5) > 0), nrow = N)
 #' ge = matrix(round(runif(N) * 2), nrow = N)
-#' sparse_phe = which(phe == 1, arr.ind=T) # patient idx, phe idx
+#' sparse_phe = which(phe == 1, arr.ind=TRUE) # patient idx, phe idx
 #' sparse_phe_M_by_N = sparse_phe[,c(2,1)] # phe idx, patient idx
 #' count_table = prepare_count_table(sparse_phe_M_by_N, ge)
 #'

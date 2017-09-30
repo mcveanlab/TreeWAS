@@ -15,7 +15,8 @@ diease, and the second column indicates patient index.}
 carries an alternative allele at the target position.}
 }
 \value{
-An M by 6 matrix.
+An M by 6 matrix. Each column show the number of counts of genotype
+and phenotype pairs of "0-0", "1-0", "2-0", "0-1", "1-1", "2-1"
 }
 \description{
 Let M be the number of disease, and N be the number of individual. We can
@@ -28,7 +29,7 @@ M = 500
 N_by_M = N * M
 phe = matrix(round(round(rexp(N_by_M)/5) > 0), nrow = N)
 ge = matrix(round(runif(N) * 2), nrow = N)
-sparse_phe = which(phe == 1, arr.ind=T) # patient idx, phe idx
+sparse_phe = which(phe == 1, arr.ind=TRUE) # patient idx, phe idx
 sparse_phe_M_by_N = sparse_phe[,c(2,1)] # phe idx, patient idx
 count_table = prepare_count_table(sparse_phe_M_by_N, ge)
 
