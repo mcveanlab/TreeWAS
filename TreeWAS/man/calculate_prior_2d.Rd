@@ -47,4 +47,3 @@ Non-local prior of correlated effect sizes
 \examples{
 
 }
-

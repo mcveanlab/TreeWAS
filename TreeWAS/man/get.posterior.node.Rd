@@ -39,4 +39,3 @@ get credible sets
 \examples{
 
 }
-

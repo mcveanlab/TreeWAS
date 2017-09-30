@@ -28,4 +28,3 @@ for logistic risk and full genetic model given b0, b1, b2, and data
 \examples{
 
 }
-

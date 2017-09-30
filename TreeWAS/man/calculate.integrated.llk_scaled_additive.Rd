@@ -19,4 +19,3 @@ calculate.integrated.llk_scaled_additive
 \examples{
 
 }
-

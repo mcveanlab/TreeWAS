@@ -16,4 +16,3 @@ p1.func(b0, b1, x)
 \description{
 Helper function
 }
-

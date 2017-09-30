@@ -24,4 +24,3 @@ Function to calculate d(log likelihood)/db0
 \examples{
 
 }
-
