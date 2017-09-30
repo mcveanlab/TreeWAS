@@ -3,6 +3,8 @@
 #' Let M be the number of disease, and N be the number of individual. We can
 #' construct a phenotype indicator matrix to show which person carries which
 #' disease
+#' @param M number of disease
+#' @param N number of individual
 #' @param sparse_phe_M_by_N is a two column matrix, to summaries which disease
 #' is carried by which patient. The first column indicate the index of the
 #' diease, and the second column indicates patient index.
@@ -22,14 +24,10 @@
 #' ge = matrix(round(runif(N) * 2), nrow = N)
 #' sparse_phe = which(phe == 1, arr.ind=TRUE) # patient idx, phe idx
 #' sparse_phe_M_by_N = sparse_phe[,c(2,1)] # phe idx, patient idx
-#' count_table = prepare_count_table(sparse_phe_M_by_N, ge)
+#' count_table = prepare_count_table(M, N, sparse_phe_M_by_N, ge)
 #'
 
-prepare_count_table <- function(sparse_phe_M_by_N, ge){
-
-    M_and_N = apply(sparse_phe_M_by_N, 2, max)
-    M = M_and_N[1]
-    N = max(M_and_N[2], length(ge))
+prepare_count_table <- function(M, N, sparse_phe_M_by_N, ge){
 
     ge_idx_of_0 = which(ge==0)
     ge_idx_of_1 = which(ge==1)
@@ -39,8 +37,9 @@ prepare_count_table <- function(sparse_phe_M_by_N, ge){
     for ( i in 1:M ){
         phe_idx_of_0 = 1:N
         phe_idx_of_1 = sparse_phe_M_by_N[,2][sparse_phe_M_by_N[,1] == i]
-        phe_idx_of_0 = phe_idx_of_0[-phe_idx_of_1]
-
+        if (length(phe_idx_of_1) > 0){
+            phe_idx_of_0 = phe_idx_of_0[-phe_idx_of_1]
+        }
         ret_tab[i, ] = c(sum(ge_idx_of_0 %in% phe_idx_of_0),
                          sum(ge_idx_of_1 %in% phe_idx_of_0),
                          sum(ge_idx_of_2 %in% phe_idx_of_0),

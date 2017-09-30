@@ -4,9 +4,13 @@
 \alias{prepare_count_table}
 \title{Preparing count table from phenotype table}
 \usage{
-prepare_count_table(sparse_phe_M_by_N, ge)
+prepare_count_table(M, N, sparse_phe_M_by_N, ge)
 }
 \arguments{
+\item{M}{number of disease}
+
+\item{N}{number of individual}
+
 \item{sparse_phe_M_by_N}{is a two column matrix, to summaries which disease
 is carried by which patient. The first column indicate the index of the
 diease, and the second column indicates patient index.}
@@ -31,6 +35,6 @@ phe = matrix(round(round(rexp(N_by_M)/5) > 0), nrow = N)
 ge = matrix(round(runif(N) * 2), nrow = N)
 sparse_phe = which(phe == 1, arr.ind=TRUE) # patient idx, phe idx
 sparse_phe_M_by_N = sparse_phe[,c(2,1)] # phe idx, patient idx
-count_table = prepare_count_table(sparse_phe_M_by_N, ge)
+count_table = prepare_count_table(M, N, sparse_phe_M_by_N, ge)
 
 }
