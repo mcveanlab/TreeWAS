@@ -22,4 +22,3 @@ Calculate LLK over the grid
 \examples{
 
 }
-

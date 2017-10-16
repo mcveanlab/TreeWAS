@@ -21,4 +21,3 @@ cc_d.llk_additive
 \examples{
 
 }
-

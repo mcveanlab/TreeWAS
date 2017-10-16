@@ -31,4 +31,3 @@ Scaled version
 \examples{
 
 }
-

@@ -1,0 +1,18 @@
+bibentry(
+  bibtype = 'Article',
+  title = 'Bayesian analysis of genetic association across tree-structured routine healthcare data in the UK Biobank',
+  author = c(person('Adrian Cortes'),
+             person('Calliope A Dendrou'),
+             person('Allan Motyer'),
+             person('Luke Jostins'),
+             person('Damjan Vukcevic'),
+             person('Alexander Dilthey'),
+             person('Peter Donnelly'),
+             person('Stephen Leslie'),
+             person('Lars Fugger'),
+             person('Gil McVean')),
+  year = 2017,
+  journal = 'Nature Genetics',
+  doi = 'Nature Genetics',
+  publisher = 'Nature Publishing Group'
+)

@@ -21,4 +21,3 @@ Likelihood function
 \examples{
 
 }
-

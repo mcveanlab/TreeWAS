@@ -28,4 +28,3 @@ model given set of parameters.
 \examples{
 
 }
-

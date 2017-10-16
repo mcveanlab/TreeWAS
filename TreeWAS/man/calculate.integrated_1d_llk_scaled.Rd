@@ -20,4 +20,3 @@ Function to sum over the LLK grid
 \examples{
 
 }
-

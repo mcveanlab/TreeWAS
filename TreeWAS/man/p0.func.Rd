@@ -19,4 +19,3 @@ Helper function
 \examples{
 
 }
-

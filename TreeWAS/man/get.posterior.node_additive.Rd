@@ -32,4 +32,3 @@ get.posterior.node_additive
 \examples{
 
 }
-

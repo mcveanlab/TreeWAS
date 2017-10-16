@@ -311,7 +311,7 @@ calculate_prior_2d <- function(
         d1 <- sqrt(b1.grid[i]^2 + b2.grid[j]^2/4)^k;
         e1 <- 1;
         if ((b1.grid[i]*b2.grid[j])<0 | abs(b2.grid[j])<abs(b1.grid[i])) e1 <- f.off;
-        jt.prior[i,j] <- dmvnorm(c(b1.grid[i], b2.grid[j]), c(mn.b1, mn.b2), sig)*d1*e1;
+        jt.prior[i,j] <- mvtnorm::dmvnorm(c(b1.grid[i], b2.grid[j]), c(mn.b1, mn.b2), sig)*d1*e1;
     }
 
     w0.1 <- which.min(abs(b1.grid));

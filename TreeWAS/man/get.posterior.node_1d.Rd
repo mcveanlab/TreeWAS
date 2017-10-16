@@ -35,4 +35,3 @@ Estimate posterior probability and get MAP estimate
 \examples{
 
 }
-

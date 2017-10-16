@@ -27,4 +27,3 @@ Function to prepare Tree table for analysis
 \examples{
 
 }
-
